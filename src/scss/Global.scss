@@ -1,0 +1,25 @@
+html {
+  font-family: 'Roboto', sans-serif;
+  font-size: clamp(1rem, 1.5vh, 2rem);
+  height: 100vh;
+  min-height: 22.5rem; // 360px
+  min-width: 30rem; // 480px
+  overflow: hidden;
+  width: 100vw;
+  
+  * {
+    box-sizing: border-box;
+    user-select: none;
+    font-size: 100%;
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+  }
+
+  body {
+    font-family: inherit;
+    height: inherit;
+    margin: 0;
+    overflow: hidden;
+    width: inherit;
+  }
+}
