@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Weekly Checklist",
-  "description": "Weekly checklist application",
+  "description": "Weekly task checklist application",
   "version": "1.0.0",
   "action": {
     "default_popup": "index.html",
@@ -12,9 +12,6 @@
     "32": "png/icon32.png",
     "48": "png/icon48.png", 
     "128": "png/icon128.png"
-  },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval';"
   },
   "permissions": [
     "storage"

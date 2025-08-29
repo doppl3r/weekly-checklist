@@ -9,7 +9,7 @@
 
 <template>
   <!-- Render page component using Routes.js -->
-  <div class="page" :class="[route.name, theme]">
+  <div class="page" :class="[route.name]">
     <router-view v-slot="{ Component }">
       <transition name="fade">
         <component :is="Component" />

@@ -1,7 +1,7 @@
 {
   "name": "weekly-checklist",
   "version": "1.0.0",
-  "description": "Weekly checklist application",
+  "description": "Weekly task checklist application",
   "author": "Jacob DeBenedetto",
   "type": "module",
   "scripts": {
