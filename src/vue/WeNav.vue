@@ -3,15 +3,15 @@
   import WeButton from './WeButton.vue';
   import WeInputDate from './WeInputDate.vue';
 
-  const props = defineProps(['increment-selected-date', 'selected-date', 'update-selected-date'])
+  const props = defineProps(['increment', 'date', 'update'])
 </script>
 
 <template>
   <nav class="we-nav">
     <WeInputDate
-      id="selected-date"
-      :value="selectedDate"
-      @change="updateSelectedDate($event.target.value)"
+      id="date"
+      :value="date"
+      @change="update($event.target.value)"
     />
     <WeButton>
       <span class="material-symbols-rounded">arrow_left_alt</span>
@@ -31,10 +31,7 @@
     border-bottom: var(--color-border) calc(1rem / 16) solid;
     display: flex;
     gap: calc(1rem / 2);
-    left: 0;
     padding: 1rem;
-    position: sticky;
-    top: 0;
 
     .we-button {
       &:last-of-type {

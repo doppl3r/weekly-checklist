@@ -25,5 +25,10 @@ html {
     margin: 0;
     overflow: hidden;
     width: inherit;
+
+    #app {
+      height: inherit;
+      width: inherit;
+    }
   }
 }

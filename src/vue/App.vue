@@ -20,5 +20,7 @@
 </template>
 
 <style lang="scss" scoped>
-
+  .page {
+    height: inherit;
+  }
 </style>

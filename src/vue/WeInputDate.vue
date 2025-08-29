@@ -21,6 +21,7 @@
     min-height: 2rem;
     padding: 0rem calc(1rem / 4);
 
+    &:hover,
     &:focus-visible {
       outline: none;
       border-color: var(--color-primary);
