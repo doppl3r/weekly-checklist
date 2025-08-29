@@ -1,0 +1,45 @@
+[
+  {
+    "name": "level",
+    "label": "Level",
+    "description": "Level earned from increasing experience.",
+    "icon": "trophy",
+    "value": 1
+  },
+  {
+    "name": "xp",
+    "label": "XP",
+    "description": "Experience earned from collecting shapes.",
+    "icon": "bar_chart"
+  },
+  {
+    "name": "bonus",
+    "label": "Bonus",
+    "description": "Extra amount you can earn per collection.",
+    "icon": "stacks",
+    "signDisplay": "always"
+  },
+  {
+    "name": "luck",
+    "label": "Luck",
+    "description": "Chance of multiplying the collected amount.",
+    "icon": "ifl",
+    "style": "percent",
+    "maximumFractionDigits": 2,
+    "minimumFractionDigits": 0
+  },
+  {
+    "name": "collected",
+    "label": "Collected",
+    "description": "Total number of shapes collected.",
+    "icon": "interests"
+  },
+  {
+    "name": "time",
+    "label": "Time",
+    "description": "Amount of time spent having fun.",
+    "Intl": "DurationFormat",
+    "style": "digital",
+    "icon": "schedule"
+  }
+]

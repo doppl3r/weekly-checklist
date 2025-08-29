@@ -10,7 +10,7 @@
 </script>
 
 <template>
-  <select class="button-action">
+  <select class="we-select">
     <option v-for="option in options" :key="option.value">
       {{ option.label }}
     </option>

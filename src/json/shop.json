@@ -1,0 +1,151 @@
+[
+  {
+    "name": "triangle",
+    "label": "Triangle",
+    "icon": "change_history",
+    "state": "unlocked",
+    "xp": 5,
+    "cost": {
+      "triangle": 0
+    }
+  },
+  {
+    "name": "square",
+    "label": "Square",
+    "icon": "square",
+    "xp": 10,
+    "cost": {
+      "triangle": 100
+    }
+  },
+  {
+    "name": "pentagon",
+    "label": "Pentagon",
+    "icon": "pentagon",
+    "xp": 15,
+    "cost": {
+      "triangle": 100,
+      "square": 500
+    }
+  },
+  {
+    "name": "hexagon",
+    "label": "Hexagon",
+    "icon": "hexagon",
+    "xp": 20,
+    "cost": {
+      "square": 500,
+      "pentagon": 1000
+    }
+  },
+  {
+    "name": "circle",
+    "label": "Circle",
+    "icon": "circle",
+    "xp": 25,
+    "cost": {
+      "pentagon": 1000,
+      "hexagon": 1500
+    }
+  },
+  {
+    "name": "heart",
+    "label": "Heart",
+    "icon": "favorite",
+    "xp": 30,
+    "cost": {
+      "hexagon": 1500,
+      "circle": 2500
+    }
+  },
+  {
+    "name": "star",
+    "label": "Star",
+    "icon": "kid_star",
+    "xp": 35,
+    "cost": {
+      "circle": 2500,
+      "heart": 5000
+    }
+  },
+  {
+    "name": "puzzle",
+    "label": "Puzzle",
+    "icon": "extension",
+    "xp": 40,
+    "cost": {
+      "heart": 5000,
+      "star": 7500
+    }
+  },
+  {
+    "name": "chevron",
+    "label": "Chevron",
+    "icon": "label_important",
+    "xp": 45,
+    "cost": {
+      "star": 7500,
+      "puzzle": 10000
+    }
+  },
+  {
+    "name": "cross",
+    "label": "Cross",
+    "icon": "health_cross",
+    "xp": 50,
+    "cost": {
+      "puzzle": 10000,
+      "chevron": 15000
+    }
+  },
+  {
+    "name": "tree",
+    "label": "Tree",
+    "icon": "park",
+    "xp": 60,
+    "cost": {
+      "chevron": 15000,
+      "cross": 20000
+    }
+  },
+  {
+    "name": "flower",
+    "label": "Flower",
+    "icon": "fertile",
+    "xp": 70,
+    "cost": {
+      "cross": 20000,
+      "tree": 25000
+    }
+  },
+  {
+    "name": "gamepad",
+    "label": "Game Pad",
+    "icon": "gamepad",
+    "xp": 80,
+    "cost": {
+      "tree": 25000,
+      "flower": 50000
+    }
+  },
+  {
+    "name": "crown",
+    "label": "Crown",
+    "icon": "chess_queen",
+    "xp": 90,
+    "cost": {
+      "flower": 50000,
+      "gamepad": 75000
+    }
+  },
+  {
+    "name": "diamond",
+    "label": "Diamond",
+    "icon": "diamond",
+    "xp": 100,
+    "cost": {
+      "gamepad": 75000,
+      "crown": 100000
+    }
+  }
+]

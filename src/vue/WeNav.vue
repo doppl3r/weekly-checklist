@@ -1,33 +1,34 @@
 <script setup>
   import { ref } from 'vue';
-  import AppButton from './AppButton.vue';
-  import AppInputDate from './AppInputDate.vue';
+  import WeButton from './WeButton.vue';
+  import WeInputDate from './WeInputDate.vue';
 
-  const props = defineProps(['selected-date', 'update-selected-date'])
+  const props = defineProps(['increment-selected-date', 'selected-date', 'update-selected-date'])
 </script>
 
 <template>
-  <nav class="app-nav">
-    <AppInputDate
+  <nav class="we-nav">
+    <WeInputDate
       id="selected-date"
       :value="selectedDate"
       @change="updateSelectedDate($event.target.value)"
     />
-    <AppButton>
+    <WeButton>
       <span class="material-symbols-rounded">arrow_left_alt</span>
-    </AppButton>
-    <AppButton>
+    </WeButton>
+    <WeButton>
       <span class="material-symbols-rounded">arrow_right_alt</span>
-    </AppButton>
-    <AppButton>
+    </WeButton>
+    <WeButton>
       <span class="material-symbols-rounded">menu</span>
-    </AppButton>
+    </WeButton>
   </nav>
 </template>
 
 <style lang="scss" scoped>
-  .app-nav {
+  .we-nav {
     align-items: center;
+    border-bottom: var(--color-border) calc(1rem / 16) solid;
     display: flex;
     gap: calc(1rem / 2);
     left: 0;
@@ -35,7 +36,7 @@
     position: sticky;
     top: 0;
 
-    .app-button {
+    .we-button {
       &:last-of-type {
         margin-left: auto;
       }

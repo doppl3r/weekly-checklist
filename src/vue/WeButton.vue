@@ -3,16 +3,16 @@
 </script>
 
 <template>
-  <button class="app-button">
+  <button class="we-button">
     <slot></slot>
   </button>
 </template>
 
 <style lang="scss" scoped>
-  .app-button {
+  .we-button {
     align-items: center;
     background-color: #ffffff;
-    border: calc(1rem / 16) solid #cccccc;
+    border: calc(1rem / 16) solid var(--color-border);
     border-radius: calc(1rem / 4);
     cursor: pointer;
     display: inline-flex;
@@ -22,7 +22,7 @@
     padding: 0;
 
     &:hover {
-      border-color: #1f1f1f;
+      border-color: var(--color-primary);
     }
   }
 </style>

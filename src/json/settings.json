@@ -1,0 +1,65 @@
+[
+  {
+    "name": "shape_selected",
+    "label": "Shape Selected",
+    "value": "triangle"
+  },
+  {
+    "name": "audio",
+    "label": "Audio",
+    "icon": "volume_up",
+    "options": ["off", "on"],
+    "type": "checkbox",
+    "value": "off",
+    "value_android": "on"
+  },
+  {
+    "name": "3d_graphics",
+    "label": "3D Graphics",
+    "icon": "deployed_code",
+    "options": ["off", "on"],
+    "type": "checkbox",
+    "value": "on"
+  },
+  {
+    "name": "battery_saver",
+    "label": "Battery Saver",
+    "icon": "battery_4_bar",
+    "options": ["off", "on"],
+    "parent": "3d_graphics",
+    "type": "checkbox",
+    "value": "off"
+  },
+  {
+    "name": "show_stats",
+    "label": "Show Stats",
+    "icon": "finance",
+    "options": ["off", "on"],
+    "parent": "3d_graphics",
+    "type": "checkbox",
+    "value": "off"
+  },
+  {
+    "name": "debug_mode",
+    "label": "Debug Mode",
+    "icon": "bug_report",
+    "options": ["off", "on"],
+    "parent": "3d_graphics",
+    "type": "checkbox",
+    "value": "off"
+  },
+  {
+    "name": "fullscreen",
+    "label": "Open Fullscreen",
+    "icon": "fullscreen",
+    "type": "button",
+    "value": false
+  },
+  {
+    "name": "delete_record",
+    "label": "Delete Record",
+    "icon": "delete",
+    "type": "button",
+    "value": false
+  }
+]

@@ -19,7 +19,14 @@ export const useDates = () => {
     selectedDate.value = value;
   }
 
+  const incrementSelectedDate = days => {
+    const currentDate = new Date(selectedDate.value);
+    currentDate.setDate(currentDate.getDate() + days);
+    updateSelectedDate(getDateKey(currentDate));
+  }
+
   return {
+    incrementSelectedDate,
     selectedDate,
     updateSelectedDate,
   };
