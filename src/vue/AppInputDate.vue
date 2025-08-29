@@ -1,9 +1,17 @@
 <script setup>
   import { ref } from 'vue';
+
+  // Define emits
+  const emit = defineEmits(['change']);
+
+  // Handle change event
+  const onChange = e => {
+    emit('change', e);
+  }
 </script>
 
 <template>
-  <input class="app-input-date" type="date" />
+  <input class="app-input-date" type="date" @change="onChange" />
 </template>
 
 <style lang="scss" scoped>

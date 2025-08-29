@@ -1,16 +1,16 @@
 <script setup>
   import { ref } from 'vue';
-  import { useDates } from '../js/utils/use-dates.js';
   import AppButton from './AppButton.vue';
   import AppInputDate from './AppInputDate.vue';
 
-  const { selectedDate, updateSelectedDate } = useDates();
+  const props = defineProps(['selected-date', 'update-selected-date'])
 </script>
 
 <template>
   <nav class="app-nav">
     <AppInputDate
       id="selected-date"
+      :value="selectedDate"
       @change="updateSelectedDate($event.target.value)"
     />
     <AppButton>
