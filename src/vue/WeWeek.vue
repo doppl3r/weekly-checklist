@@ -1,8 +1,9 @@
 <script setup>
-  import { nextTick, ref } from 'vue';
+  import { nextTick, onMounted, ref } from 'vue';
 
   // Define props and state
   const props = defineProps(['date']);
+  const today = new Date().toISOString().slice(0, 10);
   const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekdays = ref({});
   const weekdaysRef = ref();
@@ -53,6 +54,17 @@
     }
   };
 
+  const onDelete = (indexDay, indexItem, checklist, e) => {
+    if (indexItem < checklist.length - 1 && e.target.selectionStart === e.target.value.length) {
+      e.preventDefault();
+      const start = checklist[indexItem].text.length;
+      const end = checklist[indexItem].text.length;
+      checklist[indexItem].text += checklist[indexItem + 1].text;
+      checklist.splice(indexItem + 1, 1);
+      focusItem(indexDay, indexItem, start, end);
+    }
+  };
+
   const focusItem = (indexDay, indexItem, start = 0, end = 0) => {
     nextTick(() => {  
       const elem = weekdaysRef.value.querySelector(`#text-${indexDay}-${indexItem}`);
@@ -62,11 +74,20 @@
       }
     });
   };
+
+  onMounted(() => {
+    const elem = weekdaysRef.value.querySelector(`.we-week__day.today`);
+    elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
 </script>
 
 <template>
   <div class="we-week" ref="weekdaysRef">
-    <div class="we-week__day" v-for="(weekday, key, indexDay) in weekdays" :key="key">
+    <div class="we-week__day"
+      v-for="(weekday, key, indexDay) in weekdays"
+      :class="{ today: today === key }"
+      :key="key"
+    >
       <div class="we-week__day-checklist">
         <div class="we-week__day-checklist-item" v-for="(item, indexItem) in weekday.checklist" :key="indexItem">
           <div class="we-week__day-checklist-item-checkbox">
@@ -77,10 +98,11 @@
             <input
               :class="{ completed: item.checked }"
               :id="`text-${indexDay}-${indexItem}`"
-              @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, $event.target.selectionStart, $event.target.selectionEnd)"
               @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, $event.target.selectionStart, $event.target.selectionEnd)"
-              @keydown.enter="onEnter(indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, $event.target.selectionStart, $event.target.selectionEnd)"
               @keydown.backspace="onBackspace(indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.delete="onDelete(indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.enter="onEnter(indexDay, indexItem, weekday.checklist, $event)"
               type="text"
               v-model="item.text"
             />
@@ -107,6 +129,10 @@
       font-size: var(--size-14);
       padding: var(--size-4) 0;
       position: relative;
+
+      &.today {
+        border-color: var(--color-primary);
+      }
 
       .we-week__day-checklist {
         display: flex;

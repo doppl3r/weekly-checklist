@@ -8,7 +8,7 @@ export const useDates = () => {
   ];
 
   const getDateKey = date => {
-    return date.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+    return date.toISOString().slice(0, 10); // 'YYYY-MM-DD'
   }
 
   const today = getDateKey(new Date());
