@@ -1,3 +1,17 @@
+:root {
+  --size-24: calc(1rem * (24 / 16));
+  --size-16: calc(1rem);
+  --size-14: calc(1rem * (14 / 16));
+  --size-12: calc(1rem * (12 / 16));
+  --size-8: calc(1rem * (8 / 16));
+  --size-4: calc(1rem * (4 / 16));
+  --size-1: calc(1rem * (1 / 16));
+  --color-background: #ffffff;
+  --color-border: #cccccc;
+  --color-disabled: #aaaaaa;
+  --color-primary: #1f1f1f;
+}
+
 html {
   font-family: 'Roboto', sans-serif;
   font-size: clamp(1rem, 3vh, 2rem);
@@ -6,10 +20,6 @@ html {
   min-width: 30rem; // 480px
   overflow: hidden;
   width: 100vw;
-
-  --color-border: #cccccc;
-  --color-background: #ffffff;
-  --color-primary: #1f1f1f;
   
   * {
     box-sizing: border-box;

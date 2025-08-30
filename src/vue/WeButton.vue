@@ -12,8 +12,8 @@
   .we-button {
     align-items: center;
     background-color: #ffffff;
-    border: calc(1rem / 16) solid var(--color-border);
-    border-radius: calc(1rem / 4);
+    border: var(--size-1) solid var(--color-border);
+    border-radius: var(--size-4);
     cursor: pointer;
     display: inline-flex;
     justify-content: center;

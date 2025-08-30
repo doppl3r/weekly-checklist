@@ -28,9 +28,9 @@
 <style lang="scss" scoped>
   .we-nav {
     align-items: center;
-    border-bottom: var(--color-border) calc(1rem / 16) solid;
+    border-bottom: var(--color-border) var(--size-1) solid;
     display: flex;
-    gap: calc(1rem / 2);
+    gap: var(--size-8);
     padding: 1rem;
 
     .we-button {

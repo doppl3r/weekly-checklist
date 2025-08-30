@@ -16,10 +16,10 @@
 
 <style lang="scss" scoped>
   .we-input-date {
-    border: calc(1rem / 16) solid var(--color-border);
-    border-radius: calc(1rem / 4);
+    border: var(--size-1) solid var(--color-border);
+    border-radius: var(--size-4);
     min-height: 2rem;
-    padding: 0rem calc(1rem / 4);
+    padding: 0rem var(--size-4);
 
     &:hover,
     &:focus-visible {
