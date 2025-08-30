@@ -1,10 +1,11 @@
 <script setup>
-  import { ref } from 'vue';
+  import { nextTick, ref } from 'vue';
 
   // Define props and state
   const props = defineProps(['date']);
   const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekdays = ref({});
+  const weekdaysRef = ref();
 
   // Generate weekdays based on provided date
   weekdayNames.forEach((name, index) => {
@@ -31,20 +32,59 @@
     weekdays.value[key] = { name, label, checklist: [{ text: 'Test', checked: false }, { text: 'Test', checked: false }] };
   });
 
+  const onEnter = (indexDay, indexItem, checklist, e) => {
+    const selectionStart = e.target.selectionStart;
+    const currentText = checklist[indexItem].text;
+    const before = currentText.slice(0, selectionStart);
+    const after = currentText.slice(selectionStart);
+    checklist[indexItem].text = before;
+    checklist.splice(indexItem + 1, 0, { text: after, checked: false });
+    focusItem(indexDay, indexItem + 1, 0, 0);
+  };
+
+  const onBackspace = (indexDay, indexItem, checklist, e) => {
+    if (indexItem > 0 && e.target.selectionStart === 0) {
+      e.preventDefault();
+      const start = checklist[indexItem - 1].text.length;
+      const end = checklist[indexItem - 1].text.length;
+      checklist[indexItem - 1].text += e.target.value;
+      checklist.splice(indexItem, 1);
+      focusItem(indexDay, indexItem - 1, start, end);
+    }
+  };
+
+  const focusItem = (indexDay, indexItem, start = 0, end = 0) => {
+    nextTick(() => {  
+      const elem = weekdaysRef.value.querySelector(`#text-${indexDay}-${indexItem}`);
+      if (elem) {
+        elem.focus();
+        elem.setSelectionRange(start, end);
+      }
+    });
+  };
 </script>
 
 <template>
-  <div class="we-week">
-    <div class="we-week__day" v-for="(weekday, key) in weekdays" :key="key">
+  <div class="we-week" ref="weekdaysRef">
+    <div class="we-week__day" v-for="(weekday, key, indexDay) in weekdays" :key="key">
       <div class="we-week__day-checklist">
-        <div class="we-week__day-checklist-item" v-for="(item, index) in weekday.checklist" :key="index">
+        <div class="we-week__day-checklist-item" v-for="(item, indexItem) in weekday.checklist" :key="indexItem">
           <div class="we-week__day-checklist-item-checkbox">
-            <input type="checkbox" :id="`check-${key}-${index}`" v-model="item.checked" />
-            <label :for="`check-${key}-${index}`"></label>
+            <input type="checkbox" :id="`check-${indexDay}-${indexItem}`" v-model="item.checked" />
+            <label :for="`check-${indexDay}-${indexItem}`"></label>
           </div>
           <div class="we-week__day-checklist-item-text">
-            <input :class="{ completed: item.checked }" :id="`text-${key}-${index}`" type="text" v-model="item.text" />
-            <label :for="`text-${key}-${index}`"></label>
+            <input
+              :class="{ completed: item.checked }"
+              :id="`text-${indexDay}-${indexItem}`"
+              @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, $event.target.selectionStart, $event.target.selectionEnd)"
+              @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, $event.target.selectionStart, $event.target.selectionEnd)"
+              @keydown.enter="onEnter(indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.backspace="onBackspace(indexDay, indexItem, weekday.checklist, $event)"
+              type="text"
+              v-model="item.text"
+            />
+            <label :for="`text-${indexDay}-${indexItem}`"></label>
           </div>
         </div>
       </div>
