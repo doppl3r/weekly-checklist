@@ -7,8 +7,15 @@
   import WeWeek from './WeWeek.vue';
 
   // Initialize composables
-  const { incrementSelectedDate, selectedDate, updateSelectedDate, updateWeekdays, weekdays } = useDates();
-
+  const {
+    incrementSelectedDate,
+    removeWeekday,
+    saveWeekday,
+    selectedDate,
+    updateSelectedDate,
+    updateWeekdays,
+    weekdays
+  } = useDates();
   
   onMounted(async () => {
     // Initialize weekdays
@@ -26,6 +33,8 @@
     <WeWeek
       :date="selectedDate"
       :weekdays="weekdays"
+      @save="saveWeekday"
+      @remove="removeWeekday"
     />
   </div>
 </template>

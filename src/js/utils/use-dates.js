@@ -5,9 +5,6 @@ export const useDates = () => {
   // Initialize composables
   const { storage } = useStorage();
 
-  // TODO: Remove
-  window.storage = storage;
-
   // Define state
   const today = new Date().toISOString().slice(0, 10);
   const selectedDate = ref(today);
@@ -56,6 +53,19 @@ export const useDates = () => {
       });
     });
   }
+
+  const saveWeekday = items => {
+    const parsedItems = JSON.parse(JSON.stringify(items));
+    const values = Object.values(parsedItems)[0];
+    const hasText = values.some(item => item.text !== '');
+
+    // Save to storage only if there's at least one item with text
+    if (hasText) storage.set(parsedItems);
+  }
+
+  const removeWeekday = key => {
+    storage.remove(key); 
+  }
   
   const updateSelectedDate = value => {
     selectedDate.value = value;
@@ -70,6 +80,8 @@ export const useDates = () => {
 
   return {
     incrementSelectedDate,
+    removeWeekday,
+    saveWeekday,
     selectedDate,
     updateSelectedDate,
     updateWeekdays,

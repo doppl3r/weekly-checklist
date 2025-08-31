@@ -2,11 +2,12 @@
   import { nextTick, ref, watch } from 'vue';
 
   // Define props and state
+  const emit = defineEmits(['remove', 'save']);
   const props = defineProps(['date', 'weekdays']);
   const today = new Date().toISOString().slice(0, 10);
   const weekdaysRef = ref();
 
-  const onEnter = (indexDay, indexItem, checklist, e) => {
+  const onEnter = (key, indexDay, indexItem, checklist, e) => {
     const selectionStart = e.target.selectionStart;
     const currentText = checklist[indexItem].text;
     const before = currentText.slice(0, selectionStart);
@@ -14,27 +15,43 @@
     checklist[indexItem].text = before;
     checklist.splice(indexItem + 1, 0, { text: after, checked: false });
     focusItem(indexDay, indexItem + 1, 0, 0);
+    emit('save', { [key]: checklist });
   };
 
-  const onBackspace = (indexDay, indexItem, checklist, e) => {
-    if (indexItem > 0 && e.target.selectionStart === 0) {
-      e.preventDefault();
-      const start = checklist[indexItem - 1].text.length;
-      const end = checklist[indexItem - 1].text.length;
-      checklist[indexItem - 1].text += e.target.value;
-      checklist.splice(indexItem, 1);
-      focusItem(indexDay, indexItem - 1, start, end);
+  const onBackspace = (key, indexDay, indexItem, checklist, e) => {
+    if (e.target.selectionStart === 0) {
+      if (indexItem > 0) {
+        // Merge with previous item if not the first
+        e.preventDefault();
+        const start = checklist[indexItem - 1].text.length;
+        const end = checklist[indexItem - 1].text.length;
+        checklist[indexItem - 1].text += e.target.value;
+        checklist.splice(indexItem, 1);
+        focusItem(indexDay, indexItem - 1, start, end);
+        emit('save', { [key]: checklist });
+      }
+      else {
+        // Remove from storage if item is emptied
+        if (checklist.length === 1 && checklist[0].text === '') {
+          emit('remove', key);
+        }
+      }
     }
   };
 
-  const onDelete = (indexDay, indexItem, checklist, e) => {
-    if (indexItem < checklist.length - 1 && e.target.selectionStart === e.target.value.length) {
+  const onDelete = (key, indexDay, indexItem, checklist, e) => {
+    const isDeleteKey = e.key === 'Delete';
+    const isLastItem = indexItem === checklist.length - 1;
+    const isSelectingEnd = e.target.selectionStart === e.target.value.length;
+
+    if (isDeleteKey && !isLastItem && isSelectingEnd) {
       e.preventDefault();
       const start = checklist[indexItem].text.length;
       const end = checklist[indexItem].text.length;
       checklist[indexItem].text += checklist[indexItem + 1].text;
       checklist.splice(indexItem + 1, 1);
       focusItem(indexDay, indexItem, start, end);
+      emit('save', { [key]: checklist });
     }
   };
 
@@ -70,18 +87,24 @@
       <div class="we-week__day-checklist">
         <div class="we-week__day-checklist-item" v-for="(item, indexItem) in weekday.checklist" :key="indexItem">
           <div class="we-week__day-checklist-item-checkbox">
-            <input type="checkbox" :id="`check-${indexDay}-${indexItem}`" v-model="item.checked" />
+            <input
+              :id="`check-${indexDay}-${indexItem}`"
+              @change="emit('save', { [key]: weekday.checklist })"
+              type="checkbox"
+              v-model="item.checked"
+            />
             <label :for="`check-${indexDay}-${indexItem}`"></label>
           </div>
           <div class="we-week__day-checklist-item-text">
             <input
               :class="{ completed: item.checked }"
               :id="`text-${indexDay}-${indexItem}`"
+              @change="emit('save', { [key]: weekday.checklist })"
               @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, $event.target.selectionStart, $event.target.selectionEnd)"
               @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, $event.target.selectionStart, $event.target.selectionEnd)"
-              @keydown.backspace="onBackspace(indexDay, indexItem, weekday.checklist, $event)"
-              @keydown.delete="onDelete(indexDay, indexItem, weekday.checklist, $event)"
-              @keydown.enter="onEnter(indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.backspace="onBackspace(key, indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.delete.exact="onDelete(key, indexDay, indexItem, weekday.checklist, $event)"
+              @keydown.enter="onEnter(key, indexDay, indexItem, weekday.checklist, $event)"
               type="text"
               autocomplete="off"
               v-model="item.text"
