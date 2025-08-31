@@ -31,9 +31,17 @@
         emit('save', { [key]: checklist });
       }
       else {
-        // Remove from storage if item is emptied
-        if (checklist.length === 1 && checklist[0].text === '') {
-          emit('remove', key);
+        if (checklist[0].text === '') {
+          // Remove checklist from storage if checklist only has one empty item
+          if (checklist.length === 1) {
+            emit('remove', key);
+          }
+          else {
+            // Only remove first item if multiple items exist
+            checklist.splice(0, 1);
+            focusItem(indexDay, 0, 0, 0);
+            emit('save', { [key]: checklist });
+          }
         }
       }
     }
