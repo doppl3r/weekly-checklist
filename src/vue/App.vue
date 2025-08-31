@@ -1,26 +1,38 @@
 <script setup>
   import '../scss/Global.scss';
   import '../scss/Fonts.scss';
-  import { useRoute } from 'vue-router';
+  import { useDates } from '../js/utils/use-dates.js';
+  import { useStorage } from '../js/utils/use-storage.js';
+  import WeNav from './WeNav.vue';
+  import WeWeek from './WeWeek.vue';
 
-  // Initialize components
-  const route = useRoute();
+  const { selectedDate, updateSelectedDate } = useDates();
+  const { get, set } = useStorage();
+
+  const test = async () => {
+    await set({ test: Date.now() });
+
+    const result = await get('test');
+    console.log('GET test:', result);
+  }
+
+  test();
 </script>
 
 <template>
-  <!-- Render page component using Routes.js -->
-  <div class="page" :class="[route.name]">
-    <router-view v-slot="{ Component }">
-      <transition name="fade">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+  <div class="weekly-checklist">
+    <WeNav
+      :date="selectedDate"
+      :update="updateSelectedDate"
+    />
+    <WeWeek :date="selectedDate" />
   </div>
-
 </template>
 
 <style lang="scss" scoped>
-  .page {
+  .weekly-checklist {
+    display: flex;
+    flex-direction: column;
     height: inherit;
   }
 </style>
