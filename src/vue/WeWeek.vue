@@ -50,7 +50,7 @@
 
   onMounted(() => {
     const elem = weekdaysRef.value.querySelector(`.we-week__day.today`);
-    elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 </script>
 
@@ -90,6 +90,7 @@
 
 <style lang="scss" scoped>
   .we-week {
+    background-color: var(--color-background);
     display: flex;
     flex-direction: column;
     gap: var(--size-8);
@@ -161,6 +162,7 @@
             position: relative;
 
             input {
+              background-color: var(--color-background);
               border-width: 0;
               color: var(--color-text);
               line-height: 1.5rem;

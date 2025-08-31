@@ -28,6 +28,7 @@
 <style lang="scss" scoped>
   .we-nav {
     align-items: center;
+    background-color: var(--color-background);
     border-bottom: var(--color-border) var(--size-1) solid;
     display: flex;
     gap: var(--size-8);

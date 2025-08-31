@@ -3,28 +3,18 @@
   import '../scss/Fonts.scss';
   import { useDates } from '../js/utils/use-dates.js';
   import { useStorage } from '../js/utils/use-storage.js';
+  import { onMounted } from 'vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
 
-  const {
-    incrementSelectedDate,
-    selectedDate,
-    updateSelectedDate,
-    updateWeekdays,
-    weekdays
-  } = useDates();
+  // Initialize composables
+  const { incrementSelectedDate, selectedDate, updateSelectedDate, updateWeekdays, weekdays } = useDates();
   const { storage } = useStorage();
 
-  updateWeekdays();
-
-  const test = async () => {
-    await storage.set({ test: Date.now() });
-
-    const result = await storage.get('test');
-    console.log('GET test:', result);
-  }
-
-  test();
+  onMounted(() => {
+    // Initialize weekdays
+    updateWeekdays();
+  });
 </script>
 
 <template>

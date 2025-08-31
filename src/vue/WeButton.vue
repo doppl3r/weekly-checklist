@@ -11,7 +11,7 @@
 <style lang="scss" scoped>
   .we-button {
     align-items: center;
-    background-color: #ffffff;
+    background-color: var(--color-background);
     border: var(--size-1) solid var(--color-border);
     border-radius: var(--size-4);
     cursor: pointer;

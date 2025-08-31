@@ -17,13 +17,13 @@ export const useDates = () => {
     // Generate weekdays based on provided date
     weekdayNames.forEach((name, index) => {
       // Get base date from date string (use local midnight)
-      const selectedDateTime = selectedDate.value + 'T00:00:00';
-      const baseDate = new Date(selectedDateTime);
+      const selectedDateMidnight = selectedDate.value + 'T00:00:00';
+      const baseDate = new Date(selectedDateMidnight);
 
       // Extract target date using day index
       const currentDayIndex = baseDate.getDay();
       const targetDateOffset = index - currentDayIndex;
-      const targetDate = new Date(selectedDateTime);
+      const targetDate = new Date(selectedDateMidnight);
       targetDate.setDate(baseDate.getDate() + targetDateOffset);
 
       // Format label as "Mon, Aug. 25"

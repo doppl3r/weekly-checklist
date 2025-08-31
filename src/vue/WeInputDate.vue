@@ -16,6 +16,7 @@
 
 <style lang="scss" scoped>
   .we-input-date {
+    background-color: var(--color-background);
     border: var(--size-1) solid var(--color-border);
     border-radius: var(--size-4);
     font-size: var(--size-14);
