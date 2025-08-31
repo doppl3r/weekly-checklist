@@ -1,11 +1,15 @@
 import { ref } from 'vue';
+import { useStorage } from './use-storage.js';
 
 export const useDates = () => {
-  const getDateKey = date => {
-    return date.toISOString().slice(0, 10); // 'YYYY-MM-DD'
-  }
+  // Initialize composables
+  const { storage } = useStorage();
 
-  const today = getDateKey(new Date());
+  // TODO: Remove
+  window.storage = storage;
+
+  // Define state
+  const today = new Date().toISOString().slice(0, 10);
   const selectedDate = ref(today);
   const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekdays = ref({});
@@ -36,7 +40,20 @@ export const useDates = () => {
       const key = targetDate.toISOString().slice(0, 10);
 
       // Assign new weekday array item
-      weekdays.value[key] = { name, label, checklist: [{ text: 'Test', checked: false }, { text: 'Test', checked: false }] };
+      weekdays.value[key] = { name, label, checklist: [] };
+
+      // Load checklist from storage
+      storage.get(key).then(result => {
+        const checklist = result[key];
+        if (Array.isArray(checklist)) {
+          checklist.forEach(item => {
+            weekdays.value[key].checklist.push(item);
+          });
+        }
+        else {
+          weekdays.value[key].checklist.push({ text: '', checked: false });
+        }
+      });
     });
   }
   
@@ -48,7 +65,7 @@ export const useDates = () => {
   const incrementSelectedDate = days => {
     const currentDate = new Date(selectedDate.value);
     currentDate.setDate(currentDate.getDate() + days);
-    updateSelectedDate(getDateKey(currentDate));
+    updateSelectedDate(currentDate.toISOString().slice(0, 10));
   }
 
   return {

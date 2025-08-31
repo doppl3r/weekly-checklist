@@ -2,20 +2,15 @@
   import '../scss/Global.scss';
   import '../scss/Fonts.scss';
   import { useDates } from '../js/utils/use-dates.js';
-  import { useStorage } from '../js/utils/use-storage.js';
   import { onMounted } from 'vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
 
   // Initialize composables
   const { incrementSelectedDate, selectedDate, updateSelectedDate, updateWeekdays, weekdays } = useDates();
-  const { storage } = useStorage();
 
   
   onMounted(async () => {
-    // For debugging purposes
-    console.log(await storage.get())
-
     // Initialize weekdays
     updateWeekdays();
   });

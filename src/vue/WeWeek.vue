@@ -1,5 +1,5 @@
 <script setup>
-  import { nextTick, onMounted, ref } from 'vue';
+  import { nextTick, ref, watch } from 'vue';
 
   // Define props and state
   const props = defineProps(['date', 'weekdays']);
@@ -48,10 +48,16 @@
     });
   };
 
-  onMounted(() => {
-    const elem = weekdaysRef.value.querySelector(`.we-week__day.today`);
-    elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  watch(() => props.date, () => {
+    scrollToToday();
   });
+
+  const scrollToToday = () => {
+    nextTick(() => {
+      const elem = weekdaysRef.value.querySelector(`.we-week__day.today`);
+      elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  };
 </script>
 
 <template>
@@ -77,6 +83,7 @@
               @keydown.delete="onDelete(indexDay, indexItem, weekday.checklist, $event)"
               @keydown.enter="onEnter(indexDay, indexItem, weekday.checklist, $event)"
               type="text"
+              autocomplete="off"
               v-model="item.text"
             />
             <label :for="`text-${indexDay}-${indexItem}`"></label>
@@ -165,10 +172,16 @@
               background-color: var(--color-background);
               border-width: 0;
               color: var(--color-text);
+              font-family: inherit;
               line-height: 1.5rem;
               outline: none;
               padding: 0;
               width: 100%;
+
+              &::selection {
+                background: var(--color-primary);
+                color: var(--color-background);
+              }
 
               &.completed {
                 color: var(--color-disabled);

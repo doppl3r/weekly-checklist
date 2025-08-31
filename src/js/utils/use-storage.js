@@ -1,5 +1,7 @@
 /*
-  Storage wrapper for Chrome storage API (with localStorage fallback)
+  The following code is a storage wrapper for Chrome storage API.
+  This is useful for development/testing in local environments where the
+  Chrome storage API is not available.
 */
 
 export const useStorage = () => {
@@ -14,15 +16,15 @@ export const useStorage = () => {
       if (hasChromeStorage) return window.chrome.storage.sync.get(keys);
       
       // Fallback to localStorage
-      if (typeof keys === 'string') return Promise.resolve({ [keys]: localStorage.getItem(keys) });
+      if (typeof keys === 'string') return Promise.resolve({ [keys]: JSON.parse(localStorage.getItem(keys)) || {} });
       else if (Array.isArray(keys)) {
         const result = {};
-        keys.forEach(key => result[key] = localStorage.getItem(key));
+        keys.forEach(key => result[key] = JSON.parse(localStorage.getItem(key))) || {};
         return Promise.resolve(result);
       }
       else if (keys === undefined) {
         const result = {};
-        Object.keys(localStorage).forEach(key => result[key] = localStorage.getItem(key));
+        Object.keys(localStorage).forEach(key => result[key] = JSON.parse(localStorage.getItem(key))) || {};
         return Promise.resolve(result);
       }
     },
@@ -40,7 +42,7 @@ export const useStorage = () => {
     },
     set: items => {
       if (hasChromeStorage) return window.chrome.storage.sync.set(items);
-      Object.entries(items).forEach(([key, value]) => localStorage.setItem(key, value));
+      Object.entries(items).forEach(([key, value]) => localStorage.setItem(key, JSON.stringify(value)));
       return Promise.resolve();
     }
   }
