@@ -18,6 +18,7 @@
   .we-input-date {
     border: var(--size-1) solid var(--color-border);
     border-radius: var(--size-4);
+    font-size: var(--size-14);
     min-height: 2rem;
     padding: 0rem var(--size-4);
 

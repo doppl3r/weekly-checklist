@@ -10,9 +10,8 @@
 
   // Generate weekdays based on provided date
   weekdayNames.forEach((name, index) => {
-    // Get base date from date string
-    const baseDate = new Date(props.date);
-    baseDate.setHours(0, 0, 0, 0);
+    // Get base date from date string (use local midnight)
+    const baseDate = new Date(props.date + 'T00:00:00');
 
     // Extract target date using day index
     const currentDayIndex = baseDate.getDay();

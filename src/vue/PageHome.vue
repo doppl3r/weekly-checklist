@@ -1,10 +1,21 @@
 <script setup>
   import { ref } from 'vue';
   import { useDates } from '../js/utils/use-dates.js';
+  import { useStorage } from '../js/utils/use-storage.js';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
 
   const { selectedDate, updateSelectedDate } = useDates();
+  const { get, set } = useStorage();
+
+  const test = async () => {
+    await set({ test: Date.now() });
+
+    const result = await get('test');
+    console.log('GET test:', result);
+  }
+
+  test();
 </script>
 
 <template>
