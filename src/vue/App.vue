@@ -11,7 +11,11 @@
   const { incrementSelectedDate, selectedDate, updateSelectedDate, updateWeekdays, weekdays } = useDates();
   const { storage } = useStorage();
 
-  onMounted(() => {
+  
+  onMounted(async () => {
+    // For debugging purposes
+    console.log(await storage.get())
+
     // Initialize weekdays
     updateWeekdays();
   });

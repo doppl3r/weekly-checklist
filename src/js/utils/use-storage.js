@@ -20,6 +20,11 @@ export const useStorage = () => {
         keys.forEach(key => result[key] = localStorage.getItem(key));
         return Promise.resolve(result);
       }
+      else if (keys === undefined) {
+        const result = {};
+        Object.keys(localStorage).forEach(key => result[key] = localStorage.getItem(key));
+        return Promise.resolve(result);
+      }
     },
     getKeys: () => {
       if (hasChromeStorage) return window.chrome.storage.sync.getKeys();
