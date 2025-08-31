@@ -19,10 +19,16 @@
     justify-content: center;
     min-height: 2rem;
     min-width: 2rem;
+    outline: none;
     padding: 0;
 
+    &:focus-visible,
     &:hover {
       border-color: var(--color-primary);
+    }
+
+    &:disabled {
+      pointer-events: none;
     }
   }
 </style>

@@ -3,7 +3,8 @@
   import WeButton from './WeButton.vue';
   import WeInputDate from './WeInputDate.vue';
 
-  const props = defineProps(['date', 'increment', 'update'])
+  // Define props
+  const props = defineProps(['date', 'today', 'increment', 'update'])
 </script>
 
 <template>
@@ -13,10 +14,20 @@
       :value="date"
       @change="update($event.target.value)"
     />
-    <WeButton @click="increment(-7)">
+    <WeButton
+      :disabled="date === today"
+      @click="update(today)"
+    >
+      <span class="material-symbols-rounded">today</span>
+    </WeButton>
+    <WeButton
+      @click="increment(-7)"
+    >
       <span class="material-symbols-rounded">arrow_left_alt</span>
     </WeButton>
-    <WeButton @click="increment(7)">
+    <WeButton
+      @click="increment(7)"
+    >
       <span class="material-symbols-rounded">arrow_right_alt</span>
     </WeButton>
     <WeButton>

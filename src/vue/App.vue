@@ -12,6 +12,7 @@
     removeWeekday,
     saveWeekday,
     selectedDate,
+    today,
     updateSelectedDate,
     updateWeekdays,
     weekdays
@@ -28,6 +29,7 @@
     <WeNav
       :date="selectedDate"
       :increment="incrementSelectedDate"
+      :today="today"
       :update="updateSelectedDate"
     />
     <WeWeek

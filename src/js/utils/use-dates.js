@@ -83,6 +83,7 @@ export const useDates = () => {
     removeWeekday,
     saveWeekday,
     selectedDate,
+    today,
     updateSelectedDate,
     updateWeekdays,
     weekdays
