@@ -38,9 +38,12 @@ export const useDates = () => {
 
       // Assign new weekday array item
       weekdays.value[key] = { name, label, checklist: [] };
+    });
 
-      // Load checklist from storage
-      storage.get(key).then(result => {
+    // Load all weekday checklists from storage using a single array of keys
+    const keys = Object.keys(weekdays.value);
+    storage.get(keys).then(result => {
+      keys.forEach(key => {
         const checklist = result[key];
         if (Array.isArray(checklist)) {
           checklist.forEach(item => {
