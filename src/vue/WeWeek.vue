@@ -2,35 +2,9 @@
   import { nextTick, onMounted, ref } from 'vue';
 
   // Define props and state
-  const props = defineProps(['date']);
+  const props = defineProps(['date', 'weekdays']);
   const today = new Date().toISOString().slice(0, 10);
-  const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const weekdays = ref({});
   const weekdaysRef = ref();
-
-  // Generate weekdays based on provided date
-  weekdayNames.forEach((name, index) => {
-    // Get base date from date string (use local midnight)
-    const baseDate = new Date(props.date + 'T00:00:00');
-
-    // Extract target date using day index
-    const currentDayIndex = baseDate.getDay();
-    const targetDateOffset = index - currentDayIndex;
-    const targetDate = new Date();
-    targetDate.setDate(baseDate.getDate() + targetDateOffset);
-
-    // Format label as "Mon, Aug. 25"
-    const shortWeekday = targetDate.toLocaleDateString('en-US', { weekday: 'short' });
-    const shortMonth = targetDate.toLocaleDateString('en-US', { month: 'short' });
-    const dayNumber = targetDate.getDate();
-    const label = `${shortWeekday}, ${shortMonth}. ${dayNumber}`;
-
-    // Get key from target date (without time)
-    const key = targetDate.toISOString().slice(0, 10);
-
-    // Assign new weekday array item
-    weekdays.value[key] = { name, label, checklist: [{ text: 'Test', checked: false }, { text: 'Test', checked: false }] };
-  });
 
   const onEnter = (indexDay, indexItem, checklist, e) => {
     const selectionStart = e.target.selectionStart;

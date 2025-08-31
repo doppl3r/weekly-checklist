@@ -4,77 +4,41 @@
 
 export const useStorage = () => {
   const hasChromeStorage = window.chrome.storage !== undefined;
-
-  const get = keys => {
-    // Use Chrome storage if available
-    if (hasChromeStorage) {
-      return window.chrome.storage.sync.get(keys);
-    }
-
-    // Use localStorage as fallback
-    if (typeof keys === 'string') {
-      return Promise.resolve({ [keys]: localStorage.getItem(keys) });
-    }
-    else if (Array.isArray(keys)) {
-      const result = {};
-      keys.forEach(key => result[key] = localStorage.getItem(key));
-      return Promise.resolve(result);
+  const storage = {
+    clear: () => {
+      if (hasChromeStorage) return window.chrome.storage.sync.clear();
+      localStorage.clear();
+      return Promise.resolve();
+    },
+    get: keys => {
+      if (hasChromeStorage) return window.chrome.storage.sync.get(keys);
+      
+      // Fallback to localStorage
+      if (typeof keys === 'string') return Promise.resolve({ [keys]: localStorage.getItem(keys) });
+      else if (Array.isArray(keys)) {
+        const result = {};
+        keys.forEach(key => result[key] = localStorage.getItem(key));
+        return Promise.resolve(result);
+      }
+    },
+    getKeys: () => {
+      if (hasChromeStorage) return window.chrome.storage.sync.getKeys();
+      return Promise.resolve(Object.keys(localStorage));
+    },
+    remove: keys => {
+      if (hasChromeStorage) return window.chrome.storage.sync.remove(keys);
+      
+      // Fallback to localStorage
+      if (typeof keys === 'string') localStorage.removeItem(keys);
+      else if (Array.isArray(keys)) keys.forEach(key => localStorage.removeItem(key));
+      return Promise.resolve();
+    },
+    set: items => {
+      if (hasChromeStorage) return window.chrome.storage.sync.set(items);
+      Object.entries(items).forEach(([key, value]) => localStorage.setItem(key, value));
+      return Promise.resolve();
     }
   }
 
-  const getKeys = () => {
-    // Use Chrome storage if available
-    if (hasChromeStorage) {
-      return window.chrome.storage.sync.getKeys();
-    }
-
-    // Use localStorage as fallback
-    return Promise.resolve(Object.keys(localStorage));
-  }
-
-  const set = (items) => {
-    // Use Chrome storage if available
-    if (hasChromeStorage) {
-      return window.chrome.storage.sync.set(items);
-    }
-
-    // Use localStorage as fallback
-    Object.entries(items).forEach(([key, value]) => localStorage.setItem(key, value));
-    return Promise.resolve();
-  }
-
-  const remove = (keys) => {
-    // Use Chrome storage if available
-    if (hasChromeStorage) {
-      return window.chrome.storage.sync.remove(keys);
-    }
-
-    // Use localStorage as fallback
-    if (typeof keys === 'string') {
-      localStorage.removeItem(keys);
-    }
-    else if (Array.isArray(keys)) {
-      keys.forEach(key => localStorage.removeItem(key));
-    }
-    return Promise.resolve();
-  }
-
-  const clear = () => {
-    // Use Chrome storage if available
-    if (hasChromeStorage) {
-      return window.chrome.storage.sync.clear();
-    }
-
-    // Use localStorage as fallback
-    localStorage.clear();
-    return Promise.resolve();
-  }
-
-  return {
-    clear,
-    get,
-    getKeys,
-    remove,
-    set
-  }
+  return { storage };
 }

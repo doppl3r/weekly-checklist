@@ -6,13 +6,21 @@
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
 
-  const { selectedDate, updateSelectedDate } = useDates();
-  const { get, set } = useStorage();
+  const {
+    incrementSelectedDate,
+    selectedDate,
+    updateSelectedDate,
+    updateWeekdays,
+    weekdays
+  } = useDates();
+  const { storage } = useStorage();
+
+  updateWeekdays();
 
   const test = async () => {
-    await set({ test: Date.now() });
+    await storage.set({ test: Date.now() });
 
-    const result = await get('test');
+    const result = await storage.get('test');
     console.log('GET test:', result);
   }
 
@@ -23,9 +31,13 @@
   <div class="weekly-checklist">
     <WeNav
       :date="selectedDate"
+      :increment="incrementSelectedDate"
       :update="updateSelectedDate"
     />
-    <WeWeek :date="selectedDate" />
+    <WeWeek
+      :date="selectedDate"
+      :weekdays="weekdays"
+    />
   </div>
 </template>
 

@@ -3,7 +3,7 @@
   import WeButton from './WeButton.vue';
   import WeInputDate from './WeInputDate.vue';
 
-  const props = defineProps(['increment', 'date', 'update'])
+  const props = defineProps(['date', 'increment', 'update'])
 </script>
 
 <template>
@@ -13,10 +13,10 @@
       :value="date"
       @change="update($event.target.value)"
     />
-    <WeButton>
+    <WeButton @click="increment(-7)">
       <span class="material-symbols-rounded">arrow_left_alt</span>
     </WeButton>
-    <WeButton>
+    <WeButton @click="increment(7)">
       <span class="material-symbols-rounded">arrow_right_alt</span>
     </WeButton>
     <WeButton>
