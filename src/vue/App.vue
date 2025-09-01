@@ -8,6 +8,7 @@
   import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
+  import WeSettings from './WeSettings.vue';
 
   const i18n = useI18n({ useScope: 'global' });
 
@@ -72,7 +73,9 @@
       :text="modalText"
       :image="modalImage"
       :actions="modalActions"
-    />
+    >
+      <WeSettings />
+    </Modal>
   </div>
 </template>
 

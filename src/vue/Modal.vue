@@ -98,7 +98,7 @@
         color: var(--color-10);
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: var(--size-8);
         padding: 1rem;
 
         .modal__container-content-title {
@@ -119,12 +119,12 @@
       }
       
       .modal__container-actions {
-        background-color: var(--color-2);
-        border: 0.125rem solid var(--color-4);
-        border-bottom-left-radius: 1rem;
-        border-bottom-right-radius: 1rem;
+        background-color: var(--color-background);
+        border-top: var(--size-1) solid var(--color-border);
+        border-bottom-left-radius: var(--size-4);
+        border-bottom-right-radius: var(--size-4);
         display: flex;
-        gap: 1rem;
+        gap: var(--size-8);
         justify-content: flex-end;
         padding: 1rem;
         width: 100%;
