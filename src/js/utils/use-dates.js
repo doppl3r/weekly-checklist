@@ -70,17 +70,18 @@ export const useDates = () => {
     });
   }
 
-  const saveWeekday = items => {
+  const setWeekday = items => {
     const parsedItems = JSON.parse(JSON.stringify(items));
     const values = Object.values(parsedItems)[0];
     const hasText = values.some(item => item.text !== '');
 
     // Save to storage only if there's at least one item with text
     if (hasText) storage.set(parsedItems);
+    else removeWeekday(Object.keys(items));
   }
 
   const removeWeekday = key => {
-    storage.remove(key); 
+    storage.remove(key);
   }
   
   const updateSelectedDate = value => {
@@ -101,8 +102,9 @@ export const useDates = () => {
   return {
     incrementSelectedDate,
     removeWeekday,
-    saveWeekday,
+    setWeekday,
     selectedDate,
+    storage,
     today,
     updateSelectedDate,
     updateWeekdays,

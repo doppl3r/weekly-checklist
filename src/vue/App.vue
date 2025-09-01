@@ -16,8 +16,9 @@
   const {
     incrementSelectedDate,
     removeWeekday,
-    saveWeekday,
+    setWeekday,
     selectedDate,
+    storage,
     today,
     updateSelectedDate,
     updateWeekdays,
@@ -64,7 +65,7 @@
       :date="selectedDate"
       :today="today"
       :weekdays="weekdays"
-      @save="saveWeekday"
+      @set="setWeekday"
       @remove="removeWeekday"
     />
     <Modal
@@ -74,7 +75,7 @@
       :image="modalImage"
       :actions="modalActions"
     >
-      <WeSettings />
+      <WeSettings :storage="storage" :visibility="modalIsOpen" />
     </Modal>
   </div>
 </template>

@@ -2,7 +2,7 @@
   import { nextTick, ref, watch } from 'vue';
 
   // Define props and state
-  const emit = defineEmits(['remove', 'save']);
+  const emit = defineEmits(['remove', 'set']);
   const props = defineProps(['date', 'today', 'weekdays']);
   const weekdaysRef = ref();
 
@@ -14,7 +14,7 @@
     checklist[indexItem].text = before;
     checklist.splice(indexItem + 1, 0, { text: after, checked: false });
     focusItem(indexDay, indexItem + 1, 0, 0);
-    emit('save', { [key]: checklist });
+    emit('set', { [key]: checklist });
   };
 
   const onBackspace = (key, indexDay, indexItem, checklist, e) => {
@@ -27,7 +27,7 @@
         checklist[indexItem - 1].text += e.target.value;
         checklist.splice(indexItem, 1);
         focusItem(indexDay, indexItem - 1, start, end);
-        emit('save', { [key]: checklist });
+        emit('set', { [key]: checklist });
       }
       else {
         if (checklist[0].text === '') {
@@ -39,7 +39,7 @@
             // Only remove first item if multiple items exist
             checklist.splice(0, 1);
             focusItem(indexDay, 0, 0, 0);
-            emit('save', { [key]: checklist });
+            emit('set', { [key]: checklist });
           }
         }
       }
@@ -58,7 +58,7 @@
       checklist[indexItem].text += checklist[indexItem + 1].text;
       checklist.splice(indexItem + 1, 1);
       focusItem(indexDay, indexItem, start, end);
-      emit('save', { [key]: checklist });
+      emit('set', { [key]: checklist });
     }
   };
 
@@ -96,7 +96,7 @@
           <div class="we-week__day-checklist-item-checkbox">
             <input
               :id="`check-${indexDay}-${indexItem}`"
-              @change="emit('save', { [key]: weekday.checklist })"
+              @change="emit('set', { [key]: weekday.checklist })"
               type="checkbox"
               v-model="item.checked"
             />
@@ -108,7 +108,7 @@
             <input
               :class="{ completed: item.checked }"
               :id="`text-${indexDay}-${indexItem}`"
-              @change="emit('save', { [key]: weekday.checklist })"
+              @change="emit('set', { [key]: weekday.checklist })"
               @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, $event.target.selectionStart, $event.target.selectionEnd)"
               @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, $event.target.selectionStart, $event.target.selectionEnd)"
               @keydown.backspace="onBackspace(key, indexDay, indexItem, weekday.checklist, $event)"
