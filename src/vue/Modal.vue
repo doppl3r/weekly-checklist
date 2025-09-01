@@ -31,31 +31,29 @@
 </script>
 
 <template>
-  <Transition name="fade">
-    <div class="modal">
-      <div class="modal__overlay" @click="selectLastAction"></div>
-      <div class="modal__container">
-        <div class="modal__container-content">
-          <h2 class="modal__container-content-title" v-if="title">{{ title }}</h2>
-          <img class="modal__container-content-image" :src="image" v-if="image" />
-          <p class="modal__container-content-text" v-if="text">{{ text }}</p>
-          <slot></slot>
-        </div>
-        <div class="modal__container-actions">
-          <WeButton
-            v-for="(action, index) in actions"
-            :key="index"
-            :class="{ selected: index === Object.keys(actions).length - 1 }, [ action.animation ]"
-            class="modal__container-actions-action grow"
-            @click="action.callback"
-          >
-            <span class="modal__container-actions-action-icon material-symbols-rounded" v-if="action.icon">{{ action.icon }}</span>
-            <span class="modal__container-actions-action-label">{{ action.label }}</span>
-          </WeButton>
-        </div>
+  <div class="modal">
+    <div class="modal__overlay" @click="selectLastAction"></div>
+    <div class="modal__container">
+      <div class="modal__container-content">
+        <h2 class="modal__container-content-title" v-if="title">{{ title }}</h2>
+        <img class="modal__container-content-image" :src="image" v-if="image" />
+        <p class="modal__container-content-text" v-if="text">{{ text }}</p>
+        <slot></slot>
+      </div>
+      <div class="modal__container-actions">
+        <WeButton
+          v-for="(action, index) in actions"
+          :key="index"
+          :class="{ selected: index === Object.keys(actions).length - 1 }, [ action.animation ]"
+          class="modal__container-actions-action grow"
+          @click="action.callback"
+        >
+          <span class="modal__container-actions-action-icon material-symbols-rounded" v-if="action.icon">{{ action.icon }}</span>
+          <span class="modal__container-actions-action-label">{{ action.label }}</span>
+        </WeButton>
       </div>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -83,15 +81,14 @@
 
     .modal__container {
       background-color: var(--color-background);
-      border: var(--size-1) solid var(--color-border);
+      border: var(--size-1) solid var(--color-primary);
       border-radius: var(--size-4);
       max-width: 100%;
       position: relative;
-      width: 32rem;
+      width: 28rem;
       z-index: 2;
       
       .modal__container-content {
-        align-items: center;
         background-color: var(--color-1);
         border-left: 0.125rem solid var(--color-4);
         border-top: 0.125rem solid var(--color-4);
@@ -106,8 +103,8 @@
 
         .modal__container-content-title {
           margin: 0;
-          font-size: 1.5rem;
-          font-weight: normal;
+          font-size: var(--size-18);
+          font-weight: bold;
         }
   
         .modal__container-content-text {
@@ -133,20 +130,5 @@
         width: 100%;
       }
     }
-  }
-
-  .fade-enter-active {
-    animation: fade-in 0.25s ease-in-out;
-  }
-  .fade-leave-active {
-    animation: fade-in 0.25s ease-in-out reverse;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  @keyframes fade-in {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
   }
 </style>
