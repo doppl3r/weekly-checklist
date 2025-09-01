@@ -16,6 +16,7 @@
     border-radius: var(--size-4);
     cursor: pointer;
     display: inline-flex;
+    font-size: var(--size-14);
     justify-content: center;
     min-height: 2rem;
     min-width: 2rem;
@@ -33,6 +34,10 @@
 
     &.no-padding {
       padding: 0;
+    }
+    
+    :deep(.material-symbols-rounded) {
+      font-size: var(--size-24);
     }
   }
 </style>
