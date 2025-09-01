@@ -5,13 +5,13 @@ export const useDates = () => {
   // Initialize composables
   const { storage } = useStorage();
 
-  const getTrueDate = str => {
+  const getDateFromKey = str => {
     if (str === undefined) return new Date(new Date().setHours(0, 0, 0, 0));
     return new Date(str + 'T00:00:00');
   };
 
   // Convert date to "YYYY-MM-DD" format
-  const convertDateToKey = date => {
+  const getKeyFromDate = date => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
@@ -19,7 +19,7 @@ export const useDates = () => {
   }
 
   // Define state
-  const today = convertDateToKey(getTrueDate());
+  const today = getKeyFromDate(getDateFromKey());
   const selectedDate = ref(today);
   const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekdays = ref({});
@@ -31,12 +31,12 @@ export const useDates = () => {
     // Generate weekdays based on provided date
     weekdayNames.forEach((name, index) => {
       // Get base date from date string (use local midnight)
-      const baseDate = getTrueDate(selectedDate.value);
+      const baseDate = getDateFromKey(selectedDate.value);
 
       // Extract target date using day index
       const currentDayIndex = baseDate.getDay();
       const targetDateOffset = index - currentDayIndex;
-      const targetDate = getTrueDate(selectedDate.value);
+      const targetDate = getDateFromKey(selectedDate.value);
       targetDate.setDate(baseDate.getDate() + targetDateOffset);
 
       // Format label as "Mon, Aug. 25"
@@ -46,7 +46,7 @@ export const useDates = () => {
       const label = `${shortWeekday}, ${shortMonth}. ${dayNumber}`;
 
       // Get key from target date (without time)
-      const key = convertDateToKey(targetDate);
+      const key = getKeyFromDate(targetDate);
 
       // Assign new weekday array item
       weekdays.value[key] = { name, label, checklist: [{ text: '', checked: false }] };
@@ -90,11 +90,11 @@ export const useDates = () => {
 
   const incrementSelectedDate = days => {
     // Get the current date from selected date
-    const currentDate = getTrueDate(selectedDate.value);
+    const currentDate = getDateFromKey(selectedDate.value);
     currentDate.setDate(currentDate.getDate() + days);
 
     // Update selected date from incremented date
-    const nextDateKey = convertDateToKey(currentDate);
+    const nextDateKey = getKeyFromDate(currentDate);
     updateSelectedDate(nextDateKey);
   }
 
