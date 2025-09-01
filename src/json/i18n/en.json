@@ -1,3 +1,8 @@
 {
-  
+  "settings": {
+    "title": "Settings",
+    "actions": {
+      "close": "Close"
+    }
+  }
 }

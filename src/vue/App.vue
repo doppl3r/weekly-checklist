@@ -1,12 +1,17 @@
 <script setup>
   import '../scss/Global.scss';
   import '../scss/Fonts.scss';
-  import { useDates } from '../js/utils/use-dates.js';
   import { onMounted } from 'vue';
+  import { useI18n } from 'vue-i18n';
+  import { useDates } from '../js/utils/use-dates.js';
+  import { useModal } from '../js/utils/use-modal.js';
+  import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
 
-  // Initialize composables
+  const i18n = useI18n({ useScope: 'global' });
+
+  // Initialize dates
   const {
     incrementSelectedDate,
     removeWeekday,
@@ -17,6 +22,27 @@
     updateWeekdays,
     weekdays
   } = useDates();
+
+  // Initialize modal
+  const {
+    closeModal,
+    openModal,
+    modalIsOpen,
+    modalActions,
+    modalImage,
+    modalText,
+    modalTitle
+  } = useModal();
+
+  const modalSettings = {
+    title: i18n.t('settings.title'),
+    actions: [
+      {
+        label: i18n.t('settings.actions.close'),
+        callback: () => closeModal()
+      }
+    ]
+  };
   
   onMounted(async () => {
     // Initialize weekdays
@@ -31,13 +57,21 @@
       :increment="incrementSelectedDate"
       :today="today"
       :update="updateSelectedDate"
-      />
-      <WeWeek
+      @open="openModal(modalSettings)"
+    />
+    <WeWeek
       :date="selectedDate"
       :today="today"
       :weekdays="weekdays"
       @save="saveWeekday"
       @remove="removeWeekday"
+    />
+    <Modal
+      v-show="modalIsOpen"
+      :title="modalTitle"
+      :text="modalText"
+      :image="modalImage"
+      :actions="modalActions"
     />
   </div>
 </template>

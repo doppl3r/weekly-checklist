@@ -20,7 +20,7 @@
     min-height: 2rem;
     min-width: 2rem;
     outline: none;
-    padding: 0;
+    padding: 0 var(--size-8);
 
     &:focus-visible,
     &:hover {
@@ -29,6 +29,10 @@
 
     &:disabled {
       pointer-events: none;
+    }
+
+    &.no-padding {
+      padding: 0;
     }
   }
 </style>
