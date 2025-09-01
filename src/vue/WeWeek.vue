@@ -3,7 +3,7 @@
 
   // Define props and state
   const emit = defineEmits(['remove', 'set']);
-  const props = defineProps(['date', 'today', 'weekdays']);
+  const props = defineProps(['date', 'today', 'weekdays', 'weekdays-updated']);
   const weekdaysRef = ref();
 
   const onEnter = (key, indexDay, indexItem, checklist, e) => {
@@ -72,8 +72,10 @@
     });
   };
 
-  watch(() => props.date, () => {
-    scrollToToday();
+  watch(() => props.weekdaysUpdated, after => {
+    if (after === true) {
+      scrollToToday();
+    }
   });
 
   const scrollToToday = () => {

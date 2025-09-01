@@ -1,5 +1,4 @@
 <script setup>
-  import { ref } from 'vue';
   import WeButton from './WeButton.vue';
   import WeInputDate from './WeInputDate.vue';
 

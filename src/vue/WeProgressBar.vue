@@ -24,7 +24,6 @@
 
 <style lang="scss" scoped>
   .progress-bar {
-    animation-fill-mode: forwards;
     background-color: var(--color-background);
     display: flex;
     flex-direction: column;

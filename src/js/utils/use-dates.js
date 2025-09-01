@@ -23,6 +23,7 @@ export const useDates = () => {
   const selectedDate = ref(today);
   const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekdays = ref({});
+  const weekdaysUpdated = ref(false);
 
   const updateWeekdays = () => {
     // Empty weekdays object
@@ -52,6 +53,9 @@ export const useDates = () => {
       weekdays.value[key] = { name, label, checklist: [{ text: '', checked: false }] };
     });
 
+    // Set initial weekdays updated state
+    weekdaysUpdated.value = false;
+
     // Load all weekday checklists from storage using a single array of keys
     const keys = Object.keys(weekdays.value);
     storage.get(keys).then(result => {
@@ -67,6 +71,9 @@ export const useDates = () => {
           });
         }
       });
+
+      // Update weekdays loading state
+      weekdaysUpdated.value = true;
     });
   }
 
@@ -108,6 +115,7 @@ export const useDates = () => {
     today,
     updateSelectedDate,
     updateWeekdays,
-    weekdays
+    weekdays,
+    weekdaysUpdated
   };
 }

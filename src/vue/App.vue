@@ -22,7 +22,8 @@
     today,
     updateSelectedDate,
     updateWeekdays,
-    weekdays
+    weekdays,
+    weekdaysUpdated
   } = useDates();
 
   // Initialize modal
@@ -65,6 +66,7 @@
       :date="selectedDate"
       :today="today"
       :weekdays="weekdays"
+      :weekdays-updated="weekdaysUpdated"
       @set="setWeekday"
       @remove="removeWeekday"
     />
@@ -75,7 +77,12 @@
       :image="modalImage"
       :actions="modalActions"
     >
-      <WeSettings :storage="storage" :visibility="modalIsOpen" />
+      <WeSettings
+        :storage="storage"
+        :today="today"
+        :update="updateWeekdays"
+        :visibility="modalIsOpen"
+      />
     </Modal>
   </div>
 </template>
