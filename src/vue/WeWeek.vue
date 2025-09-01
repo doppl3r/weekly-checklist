@@ -3,8 +3,7 @@
 
   // Define props and state
   const emit = defineEmits(['remove', 'save']);
-  const props = defineProps(['date', 'weekdays']);
-  const today = new Date().toISOString().slice(0, 10);
+  const props = defineProps(['date', 'today', 'weekdays']);
   const weekdaysRef = ref();
 
   const onEnter = (key, indexDay, indexItem, checklist, e) => {

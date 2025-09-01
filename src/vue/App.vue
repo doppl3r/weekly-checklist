@@ -31,9 +31,10 @@
       :increment="incrementSelectedDate"
       :today="today"
       :update="updateSelectedDate"
-    />
-    <WeWeek
+      />
+      <WeWeek
       :date="selectedDate"
+      :today="today"
       :weekdays="weekdays"
       @save="saveWeekday"
       @remove="removeWeekday"

@@ -5,8 +5,21 @@ export const useDates = () => {
   // Initialize composables
   const { storage } = useStorage();
 
+  const getTrueDate = str => {
+    if (str === undefined) return new Date(new Date().setHours(0, 0, 0, 0));
+    return new Date(str + 'T00:00:00');
+  };
+
+  // Convert date to "YYYY-MM-DD" format
+  const convertDateToKey = date => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   // Define state
-  const today = new Date().toISOString().slice(0, 10);
+  const today = convertDateToKey(getTrueDate());
   const selectedDate = ref(today);
   const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const weekdays = ref({});
@@ -18,13 +31,12 @@ export const useDates = () => {
     // Generate weekdays based on provided date
     weekdayNames.forEach((name, index) => {
       // Get base date from date string (use local midnight)
-      const selectedDateMidnight = selectedDate.value + 'T00:00:00';
-      const baseDate = new Date(selectedDateMidnight);
+      const baseDate = getTrueDate(selectedDate.value);
 
       // Extract target date using day index
       const currentDayIndex = baseDate.getDay();
       const targetDateOffset = index - currentDayIndex;
-      const targetDate = new Date(selectedDateMidnight);
+      const targetDate = getTrueDate(selectedDate.value);
       targetDate.setDate(baseDate.getDate() + targetDateOffset);
 
       // Format label as "Mon, Aug. 25"
@@ -34,10 +46,10 @@ export const useDates = () => {
       const label = `${shortWeekday}, ${shortMonth}. ${dayNumber}`;
 
       // Get key from target date (without time)
-      const key = targetDate.toISOString().slice(0, 10);
+      const key = convertDateToKey(targetDate);
 
       // Assign new weekday array item
-      weekdays.value[key] = { name, label, checklist: [] };
+      weekdays.value[key] = { name, label, checklist: [{ text: '', checked: false }] };
     });
 
     // Load all weekday checklists from storage using a single array of keys
@@ -46,12 +58,13 @@ export const useDates = () => {
       keys.forEach(key => {
         const checklist = result[key];
         if (Array.isArray(checklist)) {
+          // Clear default empty item
+          weekdays.value[key].checklist.length = 0;
+
+          // Populate checklist with loaded items
           checklist.forEach(item => {
             weekdays.value[key].checklist.push(item);
           });
-        }
-        else {
-          weekdays.value[key].checklist.push({ text: '', checked: false });
         }
       });
     });
@@ -76,9 +89,13 @@ export const useDates = () => {
   }
 
   const incrementSelectedDate = days => {
-    const currentDate = new Date(selectedDate.value);
+    // Get the current date from selected date
+    const currentDate = getTrueDate(selectedDate.value);
     currentDate.setDate(currentDate.getDate() + days);
-    updateSelectedDate(currentDate.toISOString().slice(0, 10));
+
+    // Update selected date from incremented date
+    const nextDateKey = convertDateToKey(currentDate);
+    updateSelectedDate(nextDateKey);
   }
 
   return {
