@@ -17,6 +17,7 @@
     cursor: pointer;
     display: inline-flex;
     font-size: var(--size-14);
+    gap: var(--size-4);
     justify-content: center;
     min-height: 2rem;
     min-width: 2rem;

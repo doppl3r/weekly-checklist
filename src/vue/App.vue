@@ -41,6 +41,13 @@
     title: i18n.t('settings.title'),
     actions: [
       {
+        icon: 'favorite',
+        label: i18n.t('settings.actions.review'),
+        callback: () => {
+          window.open('https://chromewebstore.google.com/detail/weekly-checklist/gmdkpnbkljchgnklemhjdgehjcoibggn/reviews', '_blank');
+        }
+      },
+      {
         label: i18n.t('settings.actions.close'),
         callback: () => closeModal()
       }

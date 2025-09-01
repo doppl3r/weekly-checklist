@@ -2,7 +2,8 @@
   "settings": {
     "title": "Settings",
     "actions": {
-      "close": "Close"
+      "close": "Close",
+      "review": "Write a Review"
     }
   }
 }

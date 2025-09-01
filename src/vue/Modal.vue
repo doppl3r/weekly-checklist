@@ -128,6 +128,10 @@
         justify-content: flex-end;
         padding: 1rem;
         width: 100%;
+
+        :deep(.material-symbols-rounded) {
+          font-size: var(--size-16);
+        }
       }
     }
   }
