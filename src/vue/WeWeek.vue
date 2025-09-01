@@ -100,7 +100,9 @@
               type="checkbox"
               v-model="item.checked"
             />
-            <label :for="`check-${indexDay}-${indexItem}`"></label>
+            <label :for="`check-${indexDay}-${indexItem}`">
+              <span class="material-symbols-rounded">check</span>
+            </label>
           </div>
           <div class="we-week__day-checklist-item-text">
             <input
@@ -180,7 +182,7 @@
 
             input:checked:focus-visible + label,
             input:checked:hover + label {
-              background-color: var(--color-primary);
+              background-color: var(--color-disabled);
             }
 
             label {
@@ -191,6 +193,15 @@
               height: var(--size-12);
               position: absolute;
               width: var(--size-12);
+
+              .material-symbols-rounded {
+                color: var(--color-background);
+                font-size: var(--size-12);
+                left: 50%;
+                position: absolute;
+                top: 50%;
+                transform: translate(-50%, -50%);
+              }
             }
           }
 
