@@ -1,5 +1,6 @@
 <script setup>
   import { nextTick, ref, watch } from 'vue';
+  import WeButton from './WeButton.vue';
 
   // Define props and state
   const emit = defineEmits(['remove', 'set']);
@@ -208,6 +209,8 @@
           }
 
           .we-week__day-checklist-item-text {
+            align-items: center;
+            display: flex;
             flex-grow: 1;
             position: relative;
 
@@ -216,7 +219,7 @@
               border-width: 0;
               color: var(--color-text);
               font-family: inherit;
-              line-height: 1.5rem;
+              line-height: var(--size-24);
               outline: none;
               padding: 0;
               width: 100%;
@@ -240,7 +243,7 @@
       }
 
       .we-week__day-label {
-        line-height: 1.5rem;
+        line-height: var(--size-24);
         position: absolute;
         right: var(--size-8);
         top: var(--size-4);
