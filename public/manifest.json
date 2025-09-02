@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Weekly Checklist",
-  "description": "Weekly task checklist application",
-  "version": "1.0.1",
+  "description": "Weekly checklist application",
+  "version": "1.0.2",
   "action": {
     "default_popup": "index.html",
     "default_title": "Weekly Checklist"

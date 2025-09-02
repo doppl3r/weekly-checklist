@@ -1,6 +1,6 @@
 # Weekly Checklist
 
-Weekly task checklist application
+Weekly checklist application
 
 ## Local Development
 

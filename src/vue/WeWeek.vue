@@ -81,7 +81,7 @@
   const scrollToToday = () => {
     nextTick(() => {
       const elem = weekdaysRef.value.querySelector(`.we-week__day.today`);
-      elem?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   };
 </script>
@@ -120,7 +120,6 @@
               autocomplete="off"
               v-model="item.text"
             />
-            <label :for="`text-${indexDay}-${indexItem}`"></label>
           </div>
         </div>
       </div>
@@ -137,6 +136,7 @@
     gap: var(--size-8);
     overflow-y: auto;
     padding: 1rem;
+    scroll-padding: var(--size-16);
     
     .we-week__day {
       border: var(--size-1) solid var(--color-border);
