@@ -11,21 +11,14 @@
   const delay = ref(1000);
   const timeoutId = ref(null);
   const oldStorageKeys = ref([]);
-  const oldStorageKeysRemoved = ref(false);
+  const oldStorageKeysRemoved = ref(0);
 
   // Remove old checklist by holding down for a specific amount of time
   const removeOldChecklists = start => {
     if (start === true) {
       timeoutId.value = setTimeout(() => {
-        // Get old storage keys
-        const todayInt = Number(props.today.replaceAll('-', ''));
-        oldStorageKeys.value = storageKeys.value.filter(key => {
-          const dateInt = Number(key.replaceAll('-', ''));
-          return dateInt > 0 && dateInt < todayInt;
-        });
-
         // Update button text
-        oldStorageKeysRemoved.value = true;
+        oldStorageKeysRemoved.value = oldStorageKeys.value.length;
 
         // Remove old storage keys
         props.storage.remove(JSON.parse(JSON.stringify(oldStorageKeys.value)));
@@ -48,7 +41,15 @@
   // Update item quota
   const updateStorageKeys = async () => {
     props.storage.getKeys().then(result => {
+      // Update storage keys from results
       storageKeys.value = result;
+
+      // Get array of old storage keys
+      const todayInt = Number(props.today.replaceAll('-', ''));
+      oldStorageKeys.value = storageKeys.value.filter(key => {
+        const dateInt = Number(key.replaceAll('-', ''));
+        return dateInt > 0 && dateInt < todayInt;
+      });
     });
   }
 
@@ -58,7 +59,7 @@
       updateStorageKeys();
     }
     else {
-      oldStorageKeysRemoved.value = false;
+      oldStorageKeysRemoved.value = 0;
     }
   });
 </script>
@@ -71,16 +72,16 @@
       :total="512"
       :value="storageKeys.length"
     />
-    <p>Need more checklists? Hold the <strong>Remove Old Checklists</strong> button for <strong>one second</strong> to remove all checklists before today's date.</p>
+    <p>Need more checklists? Hold the following button for <strong>one second</strong> to remove all checklists before today's date.</p>
     <WeButton
       :class="{ holding: timeoutId != null }"
       :style="{ '--delay-remove': delay + 'ms' }"
-      :disabled="oldStorageKeysRemoved"
+      :disabled="oldStorageKeysRemoved > 0"
       @pointerdown="removeOldChecklists(true)"
       @pointerup="removeOldChecklists(false)"
     >
-      <span v-if="oldStorageKeysRemoved === false">Remove Old Checklists</span>
-      <span v-else>Removed ({{ oldStorageKeys.length }}) checklists</span>
+      <span v-if="oldStorageKeysRemoved === 0">Remove <strong>{{ oldStorageKeys.length }}</strong> old checklists</span>
+      <span v-else><strong>{{ oldStorageKeysRemoved }}</strong> checklists removed</span>
     </WeButton>
   </div>
 </template>
