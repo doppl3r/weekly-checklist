@@ -4,7 +4,7 @@
   import WeProgressBar from './WeProgressBar.vue';
   
   // Initialize props
-  const props = defineProps(['storage', 'today', 'update', 'visibility']);
+  const props = defineProps(['date', 'storage', 'update', 'visibility']);
 
   // Initialize states
   const storageKeys = ref([]);
@@ -46,10 +46,10 @@
       storageKeys.value = result;
 
       // Get array of old storage keys
-      const todayInt = Number(props.today.replaceAll('-', ''));
+      const selectedDateInt = Number(props.date.replaceAll('-', ''));
       oldStorageKeys.value = storageKeys.value.filter(key => {
         const dateInt = Number(key.replaceAll('-', ''));
-        return dateInt > 0 && dateInt < todayInt;
+        return dateInt > 0 && dateInt < selectedDateInt;
       });
     });
   }
@@ -78,7 +78,7 @@
       :total="512"
       :value="storageKeys.length"
     />
-    <p>Need more checklists? Hold the following button for <strong>one second</strong> to remove all checklists before today's date.</p>
+    <p>Need more checklists? Hold "Remove" for <strong>one second</strong> to remove all checklists before the selected date.</p>
     <WeButton
       :class="{ holding: timeoutId != null }"
       :style="{ '--delay-remove': delay + 'ms' }"

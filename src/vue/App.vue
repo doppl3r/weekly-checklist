@@ -86,7 +86,7 @@
     >
       <WeSettings
         :storage="storage"
-        :today="today"
+        :date="selectedDate"
         :update="updateWeekdays"
         :visibility="modalIsOpen"
       />
