@@ -99,6 +99,8 @@
         display: flex;
         flex-direction: column;
         gap: var(--size-8);
+        max-height: 16rem;
+        overflow-y: auto;
         padding: 1rem;
 
         .modal__container-content-title {

@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, watch } from 'vue';
+  import { ref, watch, onMounted } from 'vue';
   import WeButton from './WeButton.vue';
   import WeProgressBar from './WeProgressBar.vue';
   
@@ -12,6 +12,7 @@
   const timeoutId = ref(null);
   const oldStorageKeys = ref([]);
   const oldStorageKeysRemoved = ref(0);
+  const version = ref('');
 
   // Remove old checklist by holding down for a specific amount of time
   const removeOldChecklists = start => {
@@ -53,6 +54,11 @@
     });
   }
 
+  onMounted(async () => {
+    const json = await (await fetch('../manifest.json')).json();
+    version.value = json.version;
+  });
+
   // Update settings from parent visibility prop
   watch(() => props.visibility, isVisible => {
     if (isVisible === true) {
@@ -66,7 +72,7 @@
 
 <template>
   <div class="we-settings">
-    <div class="label">Data</div>
+    <p class="we-settings_version">Version: {{ version }}</p>
     <p>The <a href="https://developer.chrome.com/docs/extensions/reference/api/storage#properties_4" target="_blank">Chrome Storage API</a> allows up to 512 checklists.</p>
     <WeProgressBar
       :total="512"

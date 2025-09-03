@@ -1,6 +1,5 @@
 <script setup>
   import { nextTick, ref, watch } from 'vue';
-  import WeButton from './WeButton.vue';
 
   // Define props and state
   const emit = defineEmits(['remove', 'set']);
