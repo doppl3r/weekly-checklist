@@ -19,7 +19,7 @@
   };
 
   const onBackspace = (key, indexDay, indexItem, checklist, e) => {
-    if (e.target.selectionStart === 0) {
+    if (e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
       if (indexItem > 0) {
         // Merge with previous item if not the first
         e.preventDefault();
