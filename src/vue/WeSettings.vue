@@ -1,21 +1,33 @@
-<script setup>
-  import { ref, watch, onMounted } from 'vue';
+<script setup lang="ts">
+  import { ref, watch, onMounted, Ref } from 'vue';
   import WeButton from './WeButton.vue';
   import WeProgressBar from './WeProgressBar.vue';
-  
-  // Initialize props
-  const props = defineProps(['date', 'storage', 'update', 'visibility']);
+
+  interface Storage {
+    getKeys: () => Promise<string[]>;
+    remove: (keys: string[] | string) => void;
+    // ...other methods if needed
+  }
+
+  interface Props {
+    date: string;
+    storage: Storage;
+    update: () => void;
+    visibility: boolean;
+  }
+
+  const props = defineProps<Props>();
 
   // Initialize states
-  const storageKeys = ref([]);
-  const delay = ref(1000);
-  const timeoutId = ref(null);
-  const oldStorageKeys = ref([]);
-  const oldStorageKeysRemoved = ref(0);
-  const version = ref('');
+  const storageKeys = ref<string[]>([]);
+  const delay = ref<number>(1000);
+  const timeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
+  const oldStorageKeys = ref<string[]>([]);
+  const oldStorageKeysRemoved = ref<number>(0);
+  const version = ref<string>('');
 
   // Remove old checklist by holding down for a specific amount of time
-  const removeOldChecklists = start => {
+  const removeOldChecklists = (start: boolean) => {
     if (start === true) {
       timeoutId.value = setTimeout(() => {
         // Update button text

@@ -1,12 +1,17 @@
-<script setup>
+<script setup lang="ts">
   import { computed } from 'vue';
-  import { useFormat } from '../js/utils/use-format.ts';
+  import { useFormat } from '../js/utils/use-format';
+
+  interface Props {
+    total: number;
+    value: number;
+  }
 
   const { formatNumber } = useFormat();
-  const props = defineProps(['total', 'value']);
+  const props = defineProps<Props>();
   const fraction = computed(() => `${ formatNumber(props.value) } / ${ formatNumber(props.total) }`);
   const decimal = computed(() => props.value / props.total);
-  const text = computed(() => `${ fraction.value } (${ formatNumber(decimal.value * 100, 1) }%)`);
+  const text = computed(() => `${ fraction.value } (${ formatNumber(decimal.value * 100, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) }%)`);
 </script>
 
 <template>

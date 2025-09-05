@@ -1,70 +1,125 @@
-<script setup>
-  import { nextTick, ref, watch } from 'vue';
+<script setup lang="ts">
+  import { nextTick, ref, watch, Ref } from 'vue';
 
-  // Define props and state
-  const emit = defineEmits(['remove', 'set']);
-  const props = defineProps(['date', 'today', 'weekdays', 'weekdays-updated']);
-  const weekdaysRef = ref();
+  // Helper methods for safe selection access
+  function getSelectionStart(event: Event): number {
+    const input = event.target as HTMLInputElement | null;
+    return input?.selectionStart ?? 0;
+  }
 
-  const onEnter = (key, indexDay, indexItem, checklist, e) => {
-    const selectionStart = e.target.selectionStart;
-    const currentText = checklist[indexItem].text;
-    const before = currentText.slice(0, selectionStart);
-    const after = currentText.slice(selectionStart);
-    checklist[indexItem].text = before;
-    checklist.splice(indexItem + 1, 0, { text: after, checked: false });
-    focusItem(indexDay, indexItem + 1, 0, 0);
-    emit('set', { [key]: checklist });
-  };
+  function getSelectionEnd(event: Event): number {
+    const input = event.target as HTMLInputElement | null;
+    return input?.selectionEnd ?? 0;
+  }
 
-  const onBackspace = (key, indexDay, indexItem, checklist, e) => {
-    if (e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
-      if (indexItem > 0) {
-        // Merge with previous item if not the first
-        e.preventDefault();
-        const start = checklist[indexItem - 1].text.length;
-        const end = checklist[indexItem - 1].text.length;
-        checklist[indexItem - 1].text += e.target.value;
-        checklist.splice(indexItem, 1);
-        focusItem(indexDay, indexItem - 1, start, end);
-        emit('set', { [key]: checklist });
-      }
-      else {
-        if (checklist[0].text === '') {
-          // Remove checklist from storage if checklist only has one empty item
-          if (checklist.length === 1) {
-            emit('remove', key);
-          }
-          else {
-            // Only remove first item if multiple items exist
-            checklist.splice(0, 1);
-            focusItem(indexDay, 0, 0, 0);
-            emit('set', { [key]: checklist });
-          }
+  interface ChecklistItem {
+    text: string;
+    checked: boolean;
+  }
+  interface Weekday {
+    name: string;
+    label: string;
+    checklist: ChecklistItem[];
+  }
+  type Weekdays = Record<string, Weekday>;
+
+  interface Props {
+    date: string;
+    today: string;
+    weekdays: Weekdays;
+    'weekdays-updated': boolean;
+  }
+
+  const emit = defineEmits<{
+    (e: 'remove', key: string): void;
+    (e: 'set', payload: Record<string, ChecklistItem[]>): void;
+  }>();
+  const props = defineProps<Props>();
+  const weekdaysRef = ref<HTMLElement | null>(null);
+
+const onEnter = (
+  key: string,
+  indexDay: number,
+  indexItem: number,
+  checklist: ChecklistItem[],
+  e: KeyboardEvent
+) => {
+  const selectionStart = getSelectionStart(e);
+  const currentText = checklist[indexItem].text;
+  const before = currentText.slice(0, selectionStart);
+  const after = currentText.slice(selectionStart);
+  checklist[indexItem].text = before;
+  checklist.splice(indexItem + 1, 0, { text: after, checked: false });
+  focusItem(indexDay, indexItem + 1, 0, 0);
+  emit('set', { [key]: checklist });
+};
+
+const onBackspace = (
+  key: string,
+  indexDay: number,
+  indexItem: number,
+  checklist: ChecklistItem[],
+  e: KeyboardEvent
+) => {
+  const input = e.target as HTMLInputElement | null;
+  if (input && input.selectionStart === 0 && input.selectionEnd === 0) {
+    if (indexItem > 0) {
+      // Merge with previous item if not the first
+      e.preventDefault();
+      const start = checklist[indexItem - 1].text.length;
+      const end = checklist[indexItem - 1].text.length;
+      checklist[indexItem - 1].text += input.value;
+      checklist.splice(indexItem, 1);
+      focusItem(indexDay, indexItem - 1, start, end);
+      emit('set', { [key]: checklist });
+    } else {
+      if (checklist[0].text === '') {
+        // Remove checklist from storage if checklist only has one empty item
+        if (checklist.length === 1) {
+          emit('remove', key);
+        } else {
+          // Only remove first item if multiple items exist
+          checklist.splice(0, 1);
+          focusItem(indexDay, 0, 0, 0);
+          emit('set', { [key]: checklist });
         }
       }
     }
-  };
+  }
+};
 
-  const onDelete = (key, indexDay, indexItem, checklist, e) => {
-    const isDeleteKey = e.key === 'Delete';
-    const isLastItem = indexItem === checklist.length - 1;
-    const isSelectingEnd = e.target.selectionStart === e.target.value.length;
+const onDelete = (
+  key: string,
+  indexDay: number,
+  indexItem: number,
+  checklist: ChecklistItem[],
+  e: KeyboardEvent
+) => {
+  const input = e.target as HTMLInputElement | null;
+  const isDeleteKey = e.key === 'Delete';
+  const isLastItem = indexItem === checklist.length - 1;
+  const isSelectingEnd = input ? input.selectionStart === input.value.length : false;
+  if (isDeleteKey && !isLastItem && isSelectingEnd) {
+    e.preventDefault();
+    const start = checklist[indexItem].text.length;
+    const end = checklist[indexItem].text.length;
+    checklist[indexItem].text += checklist[indexItem + 1].text;
+    checklist.splice(indexItem + 1, 1);
+    focusItem(indexDay, indexItem, start, end);
+    emit('set', { [key]: checklist });
+  }
+};
 
-    if (isDeleteKey && !isLastItem && isSelectingEnd) {
-      e.preventDefault();
-      const start = checklist[indexItem].text.length;
-      const end = checklist[indexItem].text.length;
-      checklist[indexItem].text += checklist[indexItem + 1].text;
-      checklist.splice(indexItem + 1, 1);
-      focusItem(indexDay, indexItem, start, end);
-      emit('set', { [key]: checklist });
-    }
-  };
-
-  const focusItem = (indexDay, indexItem, start = 0, end = 0) => {
-    nextTick(() => {  
-      const elem = weekdaysRef.value.querySelector(`#text-${indexDay}-${indexItem}`);
+  const focusItem = (
+    indexDay: number,
+    indexItem: number,
+    start: number = 0,
+    end: number = 0
+  ) => {
+    nextTick(() => {
+      const parent = weekdaysRef.value;
+      if (!parent) return;
+      const elem = parent.querySelector(`#text-${indexDay}-${indexItem}`) as HTMLInputElement | null;
       if (elem) {
         elem.focus();
         elem.setSelectionRange(start, end);
@@ -72,7 +127,7 @@
     });
   };
 
-  watch(() => props.weekdaysUpdated, after => {
+  watch(() => props['weekdays-updated'], after => {
     if (after === true) {
       scrollToToday();
     }
@@ -80,7 +135,9 @@
 
   const scrollToToday = () => {
     nextTick(() => {
-      const elem = weekdaysRef.value.querySelector(`.we-week__day.today`);
+      const parent = weekdaysRef.value;
+      if (!parent) return;
+      const elem = parent.querySelector('.we-week__day.today') as HTMLElement | null;
       elem?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   };
@@ -111,8 +168,8 @@
               :class="{ completed: item.checked }"
               :id="`text-${indexDay}-${indexItem}`"
               @change="emit('set', { [key]: weekday.checklist })"
-              @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, $event.target.selectionStart, $event.target.selectionEnd)"
-              @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, $event.target.selectionStart, $event.target.selectionEnd)"
+              @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, getSelectionStart($event), getSelectionEnd($event))"
+              @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, getSelectionStart($event), getSelectionEnd($event))"
               @keydown.backspace="onBackspace(key, indexDay, indexItem, weekday.checklist, $event)"
               @keydown.delete.exact="onDelete(key, indexDay, indexItem, weekday.checklist, $event)"
               @keydown.enter="onEnter(key, indexDay, indexItem, weekday.checklist, $event)"

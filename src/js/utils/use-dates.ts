@@ -12,7 +12,7 @@ interface Weekday {
   checklist: ChecklistItem[];
 }
 
-type Weekdays = Record<string, Weekday>;
+export type Weekdays = Record<string, Weekday>;
 
 export const useDates = () => {
   // Initialize composables

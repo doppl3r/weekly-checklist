@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue';
 
   // Define emits
-  const emit = defineEmits(['change']);
+  const emit = defineEmits<(e: 'change', event: Event) => void>();
 
   // Handle change event
-  const onChange = e => {
+  const onChange = (e: Event) => {
     emit('change', e);
-  }
+  };
 </script>
 
 <template>

@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
   import { ref } from 'vue';
 
-  const props = defineProps({
-    options: {
-      type: Array,
-      required: true
-    }
-  });
+  interface Option {
+    value: string | number;
+    label: string;
+  }
+
+  const props = defineProps<{ options: Option[] }>();
 </script>
 
 <template>

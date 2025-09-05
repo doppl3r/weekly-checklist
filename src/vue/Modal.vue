@@ -1,9 +1,18 @@
-<script setup>
+<script setup lang="ts">
+  import type { PropType } from 'vue';
   import WeButton from './WeButton.vue';
+
+  interface ModalAction {
+    icon?: string;
+    label: string;
+    callback: () => void;
+    animation?: string;
+    [key: string]: any;
+  }
 
   const props = defineProps({
     actions: {
-      type: Array,
+      type: Array as PropType<ModalAction[]>,
       default: () => ([])
     },
     image: {
@@ -44,7 +53,7 @@
         <WeButton
           v-for="(action, index) in actions"
           :key="index"
-          :class="{ selected: index === Object.keys(actions).length - 1 }, [ action.animation ]"
+          :class="[{ selected: index === actions.length - 1 }, action.animation]"
           class="modal__container-actions-action grow"
           @click="action.callback"
         >

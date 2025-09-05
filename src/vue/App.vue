@@ -1,10 +1,13 @@
-<script setup>
+<script setup lang="ts">
+  import type { Ref } from 'vue';
+  import type { Weekdays } from '../js/utils/use-dates';
+  import type { Storage } from '../js/utils/use-storage';
   import '../scss/Global.scss';
   import '../scss/Fonts.scss';
   import { onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { useDates } from '../js/utils/use-dates.ts';
-  import { useModal } from '../js/utils/use-modal.ts';
+  import { useDates } from '../js/utils/use-dates';
+  import { useModal } from '../js/utils/use-modal';
   import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
@@ -24,6 +27,17 @@
     updateWeekdays,
     weekdays,
     weekdaysUpdated
+  }: {
+    incrementSelectedDate: (days: number) => void;
+    removeWeekday: (key: string | string[]) => void;
+    setWeekday: (items: Record<string, any[]>) => void;
+    selectedDate: Ref<string>;
+    storage: Storage;
+    today: string;
+    updateSelectedDate: (value: string) => void;
+    updateWeekdays: () => void;
+    weekdays: Ref<Weekdays>;
+    weekdaysUpdated: Ref<boolean>;
   } = useDates();
 
   // Initialize modal
@@ -35,6 +49,14 @@
     modalImage,
     modalText,
     modalTitle
+  }: {
+    closeModal: () => void;
+    openModal: (options: any) => void;
+    modalIsOpen: Ref<boolean>;
+    modalActions: Ref<any[]>;
+    modalImage: Ref<string>;
+    modalText: Ref<string>;
+    modalTitle: Ref<string>;
   } = useModal();
 
   const modalSettings = {

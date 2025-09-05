@@ -1,13 +1,20 @@
-<script setup>
+<script setup lang="ts">
   import WeButton from './WeButton.vue';
   import WeInputDate from './WeInputDate.vue';
   import { useI18n } from 'vue-i18n';
 
   const i18n = useI18n({ useScope: 'global' });
 
-  // Define props
-  const emit = defineEmits(['open']);
-  const props = defineProps(['date', 'increment', 'today', 'update']);
+  // Define props and emits with types
+  interface Props {
+    date: string;
+    increment: (days: number) => void;
+    today: string;
+    update: (date: string) => void;
+  }
+
+  const emit = defineEmits<(e: 'open') => void>();
+  const props = defineProps<Props>();
 </script>
 
 <template>
