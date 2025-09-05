@@ -66,6 +66,10 @@
     });
   }
 
+  const openFullscreen = () => {
+    window.open(window.location.href, '_blank');
+  }
+
   onMounted(async () => {
     const json = await (await fetch('../manifest.json')).json();
     version.value = json.version;
@@ -101,11 +105,20 @@
       <span v-if="oldStorageKeysRemoved === 0">Remove <strong>{{ oldStorageKeys.length }}</strong> old checklists</span>
       <span v-else><strong>{{ oldStorageKeysRemoved }}</strong> checklists removed</span>
     </WeButton>
+    <WeButton
+      @click="openFullscreen"
+    >
+      <span>Open Fullscreen</span>
+    </WeButton>
   </div>
 </template>
 
 <style lang="scss" scoped>
   .we-settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-8);
+    
     label, .label {
       font-size: var(--size-14);
       font-weight: bold;
@@ -136,7 +149,7 @@
     }
 
     p {
-      margin: var(--size-8) 0;
+      margin: 0;
       font-size: var(--size-14);
 
       a {

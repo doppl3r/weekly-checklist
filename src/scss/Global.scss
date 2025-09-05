@@ -18,7 +18,7 @@
 
 html {
   font-family: 'Roboto', sans-serif;
-  font-size: clamp(1rem, 3vh, 2rem);
+  font-size: clamp(1rem, 3vh, 1rem); // Optional: Change max 1rem to 2rem
   height: 100vh;
   min-height: 22.5rem; // 360px
   min-width: 30rem; // 480px
