@@ -27,7 +27,7 @@
     date: string;
     today: string;
     weekdays: Weekdays;
-    'weekdays-updated': boolean;
+    weekdaysUpdated: boolean;
   }
 
   const emit = defineEmits<{
@@ -127,7 +127,7 @@ const onDelete = (
     });
   };
 
-  watch(() => props['weekdays-updated'], after => {
+  watch(() => props.weekdaysUpdated, after => {
     if (after === true) {
       scrollToToday();
     }
