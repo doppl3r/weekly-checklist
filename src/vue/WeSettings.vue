@@ -2,12 +2,7 @@
   import { ref, watch, onMounted, Ref } from 'vue';
   import WeButton from './WeButton.vue';
   import WeProgressBar from './WeProgressBar.vue';
-
-  interface Storage {
-    getKeys: () => Promise<string[]>;
-    remove: (keys: string[] | string) => void;
-    // ...other methods if needed
-  }
+  import { Storage } from '../types/types';
 
   interface Props {
     date: string;

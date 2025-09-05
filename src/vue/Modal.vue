@@ -1,14 +1,7 @@
 <script setup lang="ts">
   import type { PropType } from 'vue';
   import WeButton from './WeButton.vue';
-
-  interface ModalAction {
-    icon?: string;
-    label: string;
-    callback: () => void;
-    animation?: string;
-    [key: string]: any;
-  }
+  import { ModalAction } from '../types/types';
 
   const props = defineProps({
     actions: {

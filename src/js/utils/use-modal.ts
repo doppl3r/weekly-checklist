@@ -1,14 +1,8 @@
 import { ref, Ref } from 'vue';
-
-interface ModalOptions {
-  actions?: any[];
-  title?: string;
-  text?: string;
-  image?: string;
-}
+import { ModalAction, ModalOptions } from '../../types/types';
 
 export const useModal = () => {
-  const modalActions: Ref<any[]> = ref([]);
+  const modalActions: Ref<ModalAction[]> = ref([]);
   const modalIsOpen: Ref<boolean> = ref(false);
   const modalTitle: Ref<string> = ref('');
   const modalText: Ref<string> = ref('');

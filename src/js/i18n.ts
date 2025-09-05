@@ -1,9 +1,6 @@
 import { createI18n } from 'vue-i18n';
 import en from '../json/i18n/en.json';
-
-interface Settings {
-  language?: string;
-}
+import { Settings } from '../types/types';
 
 // vue-i18n expects messages to be Record<string, LocaleMessageObject>
 // en.json is assumed to be an object with string keys and string values

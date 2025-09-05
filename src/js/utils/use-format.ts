@@ -1,13 +1,5 @@
 // Utility composable for formatting numbers, durations, and random integers
-
-export interface FormatNumberOptions extends Intl.NumberFormatOptions {}
-
-export interface Duration {
-  hours?: number;
-  minutes?: number;
-  seconds?: number;
-  [key: string]: number | undefined;
-}
+import { FormatNumberOptions, Duration } from '../../types/types';
 
 export const useFormat = () => {
   const formatNumber = (value: number = 0, options?: FormatNumberOptions): string => {

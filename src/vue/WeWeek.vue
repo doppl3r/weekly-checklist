@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { nextTick, ref, watch, Ref } from 'vue';
+  import { nextTick, ref, watch } from 'vue';
+  import { ChecklistItem, Weekdays } from '../types/types';
 
   // Helper methods for safe selection access
   function getSelectionStart(event: Event): number {
@@ -11,17 +12,6 @@
     const input = event.target as HTMLInputElement | null;
     return input?.selectionEnd ?? 0;
   }
-
-  interface ChecklistItem {
-    text: string;
-    checked: boolean;
-  }
-  interface Weekday {
-    name: string;
-    label: string;
-    checklist: ChecklistItem[];
-  }
-  type Weekdays = Record<string, Weekday>;
 
   interface Props {
     date: string;

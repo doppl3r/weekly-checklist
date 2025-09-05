@@ -3,19 +3,12 @@
   This is useful for development/testing in local environments where the
   Chrome storage API is not available.
 */
+import { Storage } from '../../types/types';
 
 declare global {
   interface Window {
     chrome?: any;
   }
-}
-
-export interface Storage {
-  clear: () => Promise<void>;
-  get: (keys?: string | string[]) => Promise<Record<string, any>>;
-  getKeys: () => Promise<string[]>;
-  remove: (keys: string | string[]) => Promise<void>;
-  set: (items: Record<string, any>) => Promise<void>;
 }
 
 export const useStorage = (): { storage: Storage } => {

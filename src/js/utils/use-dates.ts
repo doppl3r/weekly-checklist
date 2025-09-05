@@ -1,18 +1,6 @@
 import { ref, Ref } from 'vue';
 import { useStorage } from './use-storage';
-
-interface ChecklistItem {
-  text: string;
-  checked: boolean;
-}
-
-interface Weekday {
-  name: string;
-  label: string;
-  checklist: ChecklistItem[];
-}
-
-export type Weekdays = Record<string, Weekday>;
+import { ChecklistItem, Weekday, Weekdays } from '../../types/types';
 
 export const useDates = () => {
   // Initialize composables
