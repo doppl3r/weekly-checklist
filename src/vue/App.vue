@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import type { Ref } from 'vue';
-  import type { Weekdays } from '../js/utils/use-dates';
-  import type { Storage } from '../js/utils/use-storage';
+  import type { Storage, Weekdays } from '../types/types';
   import '../scss/Global.scss';
   import '../scss/Fonts.scss';
   import { onMounted } from 'vue';
