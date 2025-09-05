@@ -2,6 +2,8 @@
 
 Weekly checklist application
 
+![Weekly Checklist Screenshot](files/png/screenshot.png)
+
 ## Local Development
 
 - Install NodeJS package libraries: `npm install`
