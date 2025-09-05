@@ -1,6 +1,6 @@
 <script setup>
   import { computed } from 'vue';
-  import { useFormat } from '../js/utils/use-format.js';
+  import { useFormat } from '../js/utils/use-format.ts';
 
   const { formatNumber } = useFormat();
   const props = defineProps(['total', 'value']);

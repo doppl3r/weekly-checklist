@@ -1,31 +1,44 @@
-import { ref } from 'vue';
-import { useStorage } from './use-storage.js';
+import { ref, Ref } from 'vue';
+import { useStorage } from './use-storage';
+
+interface ChecklistItem {
+  text: string;
+  checked: boolean;
+}
+
+interface Weekday {
+  name: string;
+  label: string;
+  checklist: ChecklistItem[];
+}
+
+type Weekdays = Record<string, Weekday>;
 
 export const useDates = () => {
   // Initialize composables
   const { storage } = useStorage();
 
-  const getDateFromKey = str => {
+  const getDateFromKey = (str?: string): Date => {
     if (str === undefined) return new Date(new Date().setHours(0, 0, 0, 0));
     return new Date(str + 'T00:00:00');
   };
 
   // Convert date to "YYYY-MM-DD" format
-  const getKeyFromDate = date => {
+  const getKeyFromDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
-  }
+  };
 
   // Define state
-  const today = getKeyFromDate(getDateFromKey());
-  const selectedDate = ref(today);
-  const weekdayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const weekdays = ref({});
-  const weekdaysUpdated = ref(false);
+  const today: string = getKeyFromDate(getDateFromKey());
+  const selectedDate: Ref<string> = ref(today);
+  const weekdayNames: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const weekdays: Ref<Weekdays> = ref({});
+  const weekdaysUpdated: Ref<boolean> = ref(false);
 
-  const updateWeekdays = () => {
+  const updateWeekdays = (): void => {
     // Empty weekdays object
     weekdays.value = {};
 
@@ -58,7 +71,7 @@ export const useDates = () => {
 
     // Load all weekday checklists from storage using a single array of keys
     const keys = Object.keys(weekdays.value);
-    storage.get(keys).then(result => {
+    storage.get(keys).then((result: Record<string, ChecklistItem[]>) => {
       keys.forEach(key => {
         const checklist = result[key];
         if (Array.isArray(checklist)) {
@@ -75,28 +88,28 @@ export const useDates = () => {
       // Update weekdays loading state
       weekdaysUpdated.value = true;
     });
-  }
+  };
 
-  const setWeekday = items => {
+  const setWeekday = (items: Record<string, ChecklistItem[]>): void => {
     const parsedItems = JSON.parse(JSON.stringify(items));
-    const values = Object.values(parsedItems)[0];
-    const hasText = values.some(item => item.text !== '');
+    const values = Object.values(parsedItems)[0] as ChecklistItem[];
+    const hasText = values.some((item: ChecklistItem) => item.text !== '');
 
     // Save to storage only if there's at least one item with text
     if (hasText) storage.set(parsedItems);
     else removeWeekday(Object.keys(items));
-  }
+  };
 
-  const removeWeekday = key => {
+  const removeWeekday = (key: string | string[]): void => {
     storage.remove(key);
-  }
-  
-  const updateSelectedDate = value => {
+  };
+
+  const updateSelectedDate = (value: string): void => {
     selectedDate.value = value;
     updateWeekdays();
-  }
+  };
 
-  const incrementSelectedDate = days => {
+  const incrementSelectedDate = (days: number): void => {
     // Get the current date from selected date
     const currentDate = getDateFromKey(selectedDate.value);
     currentDate.setDate(currentDate.getDate() + days);
@@ -104,7 +117,7 @@ export const useDates = () => {
     // Update selected date from incremented date
     const nextDateKey = getKeyFromDate(currentDate);
     updateSelectedDate(nextDateKey);
-  }
+  };
 
   return {
     incrementSelectedDate,
@@ -118,4 +131,4 @@ export const useDates = () => {
     weekdays,
     weekdaysUpdated
   };
-}
+};

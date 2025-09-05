@@ -3,8 +3,8 @@
   import '../scss/Fonts.scss';
   import { onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { useDates } from '../js/utils/use-dates.js';
-  import { useModal } from '../js/utils/use-modal.js';
+  import { useDates } from '../js/utils/use-dates.ts';
+  import { useModal } from '../js/utils/use-modal.ts';
   import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
