@@ -15,6 +15,7 @@
   const i18n = useI18n({ useScope: 'global' });
 
   // Initialize dates
+  type UseDatesReturn = ReturnType<typeof useDates>;
   const {
     incrementSelectedDate,
     removeWeekday,
@@ -26,20 +27,10 @@
     updateWeekdays,
     weekdays,
     weekdaysUpdated
-  }: {
-    incrementSelectedDate: (days: number) => void;
-    removeWeekday: (key: string | string[]) => void;
-    setWeekday: (items: Record<string, any[]>) => void;
-    selectedDate: Ref<string>;
-    storage: Storage;
-    today: string;
-    updateSelectedDate: (value: string) => void;
-    updateWeekdays: () => void;
-    weekdays: Ref<Weekdays>;
-    weekdaysUpdated: Ref<boolean>;
-  } = useDates();
+  }: UseDatesReturn = useDates();
 
   // Initialize modal
+  type UseModalReturn = ReturnType<typeof useModal>;
   const {
     closeModal,
     openModal,
@@ -48,15 +39,7 @@
     modalImage,
     modalText,
     modalTitle
-  }: {
-    closeModal: () => void;
-    openModal: (options: any) => void;
-    modalIsOpen: Ref<boolean>;
-    modalActions: Ref<any[]>;
-    modalImage: Ref<string>;
-    modalText: Ref<string>;
-    modalTitle: Ref<string>;
-  } = useModal();
+  }: UseModalReturn = useModal();
 
   const modalSettings = {
     title: i18n.t('settings.title'),
