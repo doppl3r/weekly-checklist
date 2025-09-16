@@ -41,6 +41,7 @@ export interface Storage {
   clear: () => Promise<void>;
   get: (keys?: string | string[]) => Promise<Record<string, any>>;
   getKeys: () => Promise<string[]>;
+  onChanged: (callback: (changes: any, namespace: string) => void) => void;
   remove: (keys: string | string[]) => Promise<void>;
   set: (items: Record<string, any>) => Promise<void>;
 }

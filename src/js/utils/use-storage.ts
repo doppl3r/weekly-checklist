@@ -40,6 +40,11 @@ export const useStorage = (): { storage: Storage } => {
       if (hasChromeStorage) return window.chrome.storage.sync.getKeys();
       return Promise.resolve(Object.keys(localStorage));
     },
+    onChanged: (callback: (changes: any, namespace: string) => void) => {
+      if (hasChromeStorage) {
+        window.chrome.storage.onChanged.addListener(callback);
+      }
+    },
     remove: (keys: string | string[]) => {
       if (hasChromeStorage) return window.chrome.storage.sync.remove(keys);
 

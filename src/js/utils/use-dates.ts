@@ -107,7 +107,20 @@ export const useDates = () => {
     updateSelectedDate(nextDateKey);
   };
 
+  const addStorageEventListener = (): void => {
+    // TODO: Modify changed data
+    storage.onChanged((changes: Record<string, { oldValue: any; newValue: any }>, namespace: string) => {
+      for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+        console.log(
+          `Storage key "${key}" in namespace "${namespace}" changed.`,
+          `Old value was "${JSON.stringify(oldValue)}", new value is "${JSON.stringify(newValue)}".`
+        );
+      }
+    });
+  };
+
   return {
+    addStorageEventListener,
     incrementSelectedDate,
     removeWeekday,
     setWeekday,
