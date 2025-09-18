@@ -108,7 +108,19 @@ const onDelete = (
   ) => {
     nextTick(() => {
       const parent = weekdaysRef.value;
+      const checklistLength = props.weekdays[Object.keys(props.weekdays)[indexDay]].checklist.length;
       if (!parent) return;
+      if (indexItem < 0) {
+        indexItem = 0;
+        start = 0;
+        end = 0;
+      }
+      else if (indexItem > checklistLength - 1) {
+        indexItem = checklistLength - 1;
+        const textLength = props.weekdays[Object.keys(props.weekdays)[indexDay]].checklist[indexItem].text.length;
+        start = textLength;
+        end = textLength;
+      }
       const elem = parent.querySelector(`#text-${indexDay}-${indexItem}`) as HTMLInputElement | null;
       if (elem) {
         elem.focus();
