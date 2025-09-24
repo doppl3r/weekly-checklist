@@ -4,6 +4,11 @@ Weekly checklist application
 
 ![Weekly Checklist Screenshot](files/png/screenshot.png)
 
+## Download
+
+Now available on Google Chrome:
+https://chromewebstore.google.com/detail/weekly-checklist/gmdkpnbkljchgnklemhjdgehjcoibggn
+
 ## Local Development
 
 - Install NodeJS package libraries: `npm install`
