@@ -1,18 +1,18 @@
 <script setup lang="ts">
-  import type { Ref } from 'vue';
-  import type { Storage, Weekdays } from '../types/types';
-  import '../scss/Global.scss';
-  import '../scss/Fonts.scss';
   import { onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useDates } from '../js/utils/use-dates';
   import { useModal } from '../js/utils/use-modal';
+  import { useSettings } from '../js/utils/use-settings';
+  import '../scss/Global.scss';
+  import '../scss/Fonts.scss';
   import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
   import WeSettings from './WeSettings.vue';
 
   const i18n = useI18n({ useScope: 'global' });
+  const { setTheme, themeRef } = useSettings();
 
   // Initialize dates
   const {
@@ -63,12 +63,16 @@
 </script>
 
 <template>
-  <div class="weekly-checklist">
+  <div
+    :class="[ themeRef ]"
+    class="weekly-checklist">
     <WeNav
       :date="selectedDate"
       :increment="incrementSelectedDate"
       :today="today"
+      :theme="themeRef"
       :update="updateSelectedDate"
+      @toggle-theme="setTheme(themeRef === 'light' ? 'dark' : 'light')"
       @open="openModal(modalSettings)"
     />
     <WeWeek
@@ -98,6 +102,7 @@
 
 <style lang="scss" scoped>
   .weekly-checklist {
+    background-color: var(--color-background);
     display: flex;
     flex-direction: column;
     height: inherit;

@@ -14,6 +14,7 @@
     background-color: var(--color-background);
     border: var(--size-1) solid var(--color-border);
     border-radius: var(--size-4);
+    color: var(--color-primary);
     cursor: pointer;
     display: inline-flex;
     font-size: var(--size-14);
@@ -31,10 +32,18 @@
 
     &:disabled {
       pointer-events: none;
+
+      :deep(.material-symbols-rounded) {
+        opacity: 0.3;
+      }
     }
 
     &.no-padding {
       padding: 0;
+    }
+
+    &.margin-left-auto {
+      margin-left: auto;
     }
     
     :deep(.material-symbols-rounded) {

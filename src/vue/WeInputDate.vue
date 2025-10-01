@@ -15,10 +15,17 @@
 </template>
 
 <style lang="scss" scoped>
+  :global(.dark) {
+    .we-input-date {
+      color-scheme: dark;
+    }
+  }
+
   .we-input-date {
     background-color: var(--color-background);
     border: var(--size-1) solid var(--color-border);
     border-radius: var(--size-4);
+    color: var(--color-primary);
     font-family: inherit;
     font-size: var(--size-14);
     min-height: 2rem;

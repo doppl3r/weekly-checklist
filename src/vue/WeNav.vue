@@ -10,10 +10,11 @@
     date: string;
     increment: (days: number) => void;
     today: string;
+    theme: string;
     update: (date: string) => void;
   }
 
-  const emit = defineEmits<(e: 'open') => void>();
+  const emit = defineEmits<(e: 'open' | 'toggle-theme') => void>();
   const props = defineProps<Props>();
 </script>
 
@@ -23,7 +24,7 @@
       id="date"
       :value="date"
       :title="i18n.t('navigation.view_calendar')"
-      @change="update($event.target.value)"
+      @change="update(($event.target as HTMLInputElement)?.value)"
     />
     <WeButton
       :class="'no-padding'"
@@ -48,6 +49,14 @@
       <span class="material-symbols-rounded">arrow_right_alt</span>
     </WeButton>
     <WeButton
+      :class="'no-padding margin-left-auto'"
+      :title="i18n.t('navigation.toggle_theme')"
+      @click="emit('toggle-theme')"
+    >
+      <span class="material-symbols-rounded" v-if="theme === 'light'">dark_mode</span>
+      <span class="material-symbols-rounded" v-else>light_mode</span>
+    </WeButton>
+    <WeButton
       :class="'no-padding'"
       :title="i18n.t('navigation.open_menu')"
       @click="emit('open')"
@@ -65,11 +74,5 @@
     display: flex;
     gap: var(--size-8);
     padding: 1rem;
-
-    .we-button {
-      &:last-of-type {
-        margin-left: auto;
-      }
-    }
   }
 </style>

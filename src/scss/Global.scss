@@ -44,5 +44,14 @@ html {
       height: inherit;
       width: inherit;
     }
+
+    .dark {
+      --color-background: #1f1f1f;
+      --color-background-transparent: rgba(0, 0, 0, 0.25);
+      --color-border: #444444;
+      --color-disabled: #555555;
+      --color-link: #aaaaaa;
+      --color-primary: #ffffff;
+    }
   }
 }

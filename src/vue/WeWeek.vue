@@ -275,7 +275,7 @@ const onDelete = (
             input {
               background-color: var(--color-background);
               border-width: 0;
-              color: var(--color-text);
+              color: var(--color-primary);
               font-family: inherit;
               line-height: var(--size-24);
               outline: none;
@@ -301,6 +301,7 @@ const onDelete = (
       }
 
       .we-week__day-label {
+        color: var(--color-primary);
         line-height: var(--size-24);
         position: absolute;
         right: var(--size-8);

@@ -91,13 +91,7 @@
       z-index: 2;
       
       .modal__container-content {
-        background-color: var(--color-1);
-        border-left: 0.125rem solid var(--color-4);
-        border-top: 0.125rem solid var(--color-4);
-        border-top-left-radius: 1rem;
-        border-top-right-radius: 1rem;
-        border-right: 0.125rem solid var(--color-4);
-        color: var(--color-10);
+        color: var(--color-primary);
         display: flex;
         flex-direction: column;
         gap: var(--size-8);
