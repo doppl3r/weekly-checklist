@@ -30,6 +30,12 @@
       border-color: var(--color-primary);
     }
 
+    &.small {
+      :deep(.material-symbols-rounded) {
+        font-size: var(--size-16);
+      }
+    }
+
     &:disabled {
       pointer-events: none;
 
