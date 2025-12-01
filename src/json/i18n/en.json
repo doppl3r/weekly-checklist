@@ -2,6 +2,7 @@
   "navigation": {
     "jump_to_today": "Jump to Today",
     "open_menu": "Open Menu",
+    "toggle_theme": "Toggle Theme",
     "view_calendar": "View Calendar",
     "view_next_week": "View Next Week",
     "view_previous_week": "View Previous Week"
