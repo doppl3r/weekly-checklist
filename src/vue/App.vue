@@ -90,6 +90,7 @@
       :today="today"
       :weekdays="weekdays"
       :weekdays-updated="weekdaysUpdated"
+      :storage="storage"
       @set="setWeekday"
       @remove="removeWeekday"
     />

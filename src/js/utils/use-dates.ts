@@ -42,10 +42,10 @@ export const useDates = () => {
       targetDate.setDate(baseDate.getDate() + targetDateOffset);
 
       // Format label as "Mon, Aug. 25"
-      const shortWeekday = targetDate.toLocaleDateString('en-US', { weekday: 'short' });
-      const shortMonth = targetDate.toLocaleDateString('en-US', { month: 'short' });
-      const dayNumber = targetDate.getDate();
-      const label = `${shortWeekday}, ${shortMonth}. ${dayNumber}`;
+      const weekdayLabel = targetDate.toLocaleDateString('en-US', { weekday: 'long' });
+      const monthLabel = targetDate.toLocaleDateString('en-US', { month: 'long' });
+      const dayLabel = targetDate.getDate();
+      const label = `${weekdayLabel}, ${monthLabel} ${dayLabel}`;
 
       // Get key from target date (without time)
       const key = getKeyFromDate(targetDate);
