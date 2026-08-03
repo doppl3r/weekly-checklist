@@ -1,6 +1,9 @@
 <script setup lang="ts">
   import { nextTick, ref, watch } from 'vue';
   import { ChecklistItem, Weekdays } from '../types/types';
+  import { useI18n } from 'vue-i18n';
+
+  const i18n = useI18n({ useScope: 'global' });
 
   // Helper methods for safe selection access
   function getSelectionStart(event: Event): number {
@@ -209,6 +212,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
           <div class="we-week__day-checklist-item-checkbox">
             <input
               :id="`check-${indexDay}-${indexItem}`"
+              :title="item.checked ? i18n.t('checklist.mark_incomplete') : i18n.t('checklist.mark_complete')"
               @change="emit('set', { [key]: weekday.checklist })"
               type="checkbox"
               v-model="item.checked"
@@ -234,16 +238,19 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
           </div>
           <div class="we-week__day-checklist-item-actions">
             <button
+              :title="i18n.t('checklist.add_item')"
               @click="addItem(key, indexDay, indexItem, weekday.checklist)"
             >
               <span class="material-symbols-rounded">add</span>
             </button>
             <button
+              :title="i18n.t('checklist.move_item_up')"
               @click="shiftItem(key, indexDay, indexItem, weekday.checklist, -1)"
             >
               <span class="material-symbols-rounded">keyboard_arrow_up</span>
             </button>
             <button
+              :title="i18n.t('checklist.move_item_down')"
               @click="shiftItem(key, indexDay, indexItem, weekday.checklist, 1)"
             >
               <span class="material-symbols-rounded">keyboard_arrow_down</span>
@@ -320,6 +327,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
               cursor: inherit;
               display: block;
               height: var(--size-12);
+              pointer-events: none;
               position: absolute;
               width: var(--size-12);
 
