@@ -8,7 +8,7 @@ const config: UserConfigExport = defineConfig({
   build: {
     emptyOutDir: true,
     outDir: './build',
-    target: 'ES2022',
+    target: 'es2022',
   },
   css: {
     preprocessorOptions: {
