@@ -176,12 +176,24 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
     if (targetDayIndex !== -1) {
       const targetChecklist = props.weekdays[targetKey].checklist;
       if (direction === 1) {
-        targetChecklist.unshift(item);
-        if (!forceDayShift) focusItem(targetDayIndex, 0, start, end);
+        if (forceDayShift) {
+          // Always append to the end of the target day
+          targetChecklist.push(item);
+        }
+        else {
+          targetChecklist.unshift(item);
+          focusItem(targetDayIndex, 0, start, end);
+        }
       }
       else {
-        targetChecklist.push(item);
-        if (!forceDayShift) focusItem(targetDayIndex, targetChecklist.length - 1, start, end);
+        if (forceDayShift) {
+          // Always prepend to the start of the target day
+          targetChecklist.unshift(item);
+        }
+        else {
+          targetChecklist.push(item);
+          focusItem(targetDayIndex, targetChecklist.length - 1, start, end);
+        }
       }
 
       // Persist both the current day and target day changes
