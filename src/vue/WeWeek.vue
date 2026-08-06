@@ -137,17 +137,20 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
     });
   };
 
-  const shiftItem = (key: string, indexDay: number, indexItem: number, checklist: ChecklistItem[], direction: -1 | 1) => {
+  const shiftItem = (key: string, indexDay: number, indexItem: number, checklist: ChecklistItem[], direction: -1 | 1, e: MouseEvent) => {
     // Read the cursor position before the click blurs the input, so we can restore it
     const input = weekdaysRef.value?.querySelector(`#text-${indexDay}-${indexItem}`) as HTMLInputElement | null;
     const start = input?.selectionStart ?? 0;
     const end = input?.selectionEnd ?? 0;
 
+    // Shift held forces moving to the adjacent day, skipping the same-day reorder
+    const forceDayShift = e.shiftKey;
+
     // Calculate the new index within the current day's checklist
     const newIndexInDay = indexItem + direction;
 
-    // Reorder within the same day
-    if (newIndexInDay >= 0 && newIndexInDay < checklist.length) {
+    // Reorder within the same day, unless the user held Shift to force moving to the adjacent day
+    if (!forceDayShift && newIndexInDay >= 0 && newIndexInDay < checklist.length) {
       [checklist[indexItem], checklist[newIndexInDay]] = [checklist[newIndexInDay], checklist[indexItem]];
       focusItem(indexDay, newIndexInDay, start, end);
       emit('set', { [key]: checklist });
@@ -174,11 +177,11 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
       const targetChecklist = props.weekdays[targetKey].checklist;
       if (direction === 1) {
         targetChecklist.unshift(item);
-        focusItem(targetDayIndex, 0, start, end);
+        if (!forceDayShift) focusItem(targetDayIndex, 0, start, end);
       }
       else {
         targetChecklist.push(item);
-        focusItem(targetDayIndex, targetChecklist.length - 1, start, end);
+        if (!forceDayShift) focusItem(targetDayIndex, targetChecklist.length - 1, start, end);
       }
 
       // Persist both the current day and target day changes
@@ -245,13 +248,13 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
             </button>
             <button
               :title="i18n.t('checklist.move_item_up')"
-              @click="shiftItem(key, indexDay, indexItem, weekday.checklist, -1)"
+              @click="shiftItem(key, indexDay, indexItem, weekday.checklist, -1, $event)"
             >
               <span class="material-symbols-rounded">keyboard_arrow_up</span>
             </button>
             <button
               :title="i18n.t('checklist.move_item_down')"
-              @click="shiftItem(key, indexDay, indexItem, weekday.checklist, 1)"
+              @click="shiftItem(key, indexDay, indexItem, weekday.checklist, 1, $event)"
             >
               <span class="material-symbols-rounded">keyboard_arrow_down</span>
             </button>
@@ -374,7 +377,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
             }
           }
 
-          &:focus-within {
+          &:hover {
             .we-week__day-checklist-item-actions {
               display: flex;
             }
@@ -382,12 +385,13 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
 
           .we-week__day-checklist-item-actions {
             display: none;
+            gap: var(--size-2);
             padding: 0 var(--size-4);
             
             button {
               align-items: center;
               background: transparent;
-              border: 0 solid var(--color-border);
+              border: var(--size-1) solid var(--color-border);
               border-radius: var(--size-4);
               cursor: pointer;
               display: flex;
@@ -396,11 +400,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
 
               &:hover,
               &:focus-visible {
-                background-color: var(--color-border);
-                
-                span {
-                  color: var(--color-background);
-                }
+                border-color: var(--color-primary);
               }
 
               span {
@@ -414,9 +414,11 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
 
       .we-week__day-label {
         color: var(--color-link);
-        font-size: var(--size-12);
+        font-size: var(--size-10);
+        letter-spacing: var(--size-1);
         line-height: var(--size-16);
         padding: 0 var(--size-4);
+        text-transform: uppercase;
       }
     }
   }
