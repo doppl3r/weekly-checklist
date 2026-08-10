@@ -79,13 +79,21 @@ export const useDates = () => {
   };
 
   const setWeekday = (items: Record<string, ChecklistItem[]>): void => {
-    const parsedItems = JSON.parse(JSON.stringify(items));
-    const values = Object.values(parsedItems)[0] as ChecklistItem[];
-    const hasText = values.some((item: ChecklistItem) => item.text !== '');
+    const parsedItems: Record<string, ChecklistItem[]> = JSON.parse(JSON.stringify(items));
+    const keysToRemove: string[] = [];
+    const itemsToSave: Record<string, ChecklistItem[]> = {};
 
-    // Save to storage only if there's at least one item with text
-    if (hasText) storage.set(parsedItems);
-    else removeWeekday(Object.keys(items));
+    // Check each day individually
+    Object.entries(parsedItems).forEach(([key, values]) => {
+      // Determine whether the current day's checklist has any text
+      const hasText = (values as ChecklistItem[]).some((item: ChecklistItem) => item.text !== '');
+      if (hasText) itemsToSave[key] = values;
+      else keysToRemove.push(key);
+    });
+
+    // Save days that have content and remove days that don't
+    if (Object.keys(itemsToSave).length > 0) storage.set(itemsToSave);
+    if (keysToRemove.length > 0) removeWeekday(keysToRemove);
   };
 
   const removeWeekday = (key: string | string[]): void => {
