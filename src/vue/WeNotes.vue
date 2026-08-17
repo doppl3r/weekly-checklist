@@ -12,7 +12,8 @@
   const notesRef = ref<string>('');
   const getNotes = async (): Promise<string> => {
     const result = await props.storage.get('weekly-checklist-notes');
-    return result['weekly-checklist-notes'];
+    const notes = result['weekly-checklist-notes'];
+    return typeof notes === 'string' ? notes : '';
   };
 
   const refreshNotes = () => {
