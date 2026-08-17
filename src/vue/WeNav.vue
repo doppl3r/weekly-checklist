@@ -14,7 +14,7 @@
     update: (date: string) => void;
   }
 
-  const emit = defineEmits<(e: 'open' | 'toggle-theme') => void>();
+  const emit = defineEmits<(e: 'open-menu' | 'open-notes' | 'toggle-theme') => void>();
   const props = defineProps<Props>();
 </script>
 
@@ -49,6 +49,13 @@
       <span class="material-symbols-rounded">arrow_right_alt</span>
     </WeButton>
     <WeButton
+      :class="'no-padding'"
+      :title="i18n.t('navigation.notes')"
+      @click="emit('open-notes')"
+    >
+      <span class="material-symbols-rounded">ink_pen</span>
+    </WeButton>
+    <WeButton
       :class="'no-padding margin-left-auto'"
       :title="i18n.t('navigation.toggle_theme')"
       @click="emit('toggle-theme')"
@@ -59,7 +66,7 @@
     <WeButton
       :class="'no-padding'"
       :title="i18n.t('navigation.open_menu')"
-      @click="emit('open')"
+      @click="emit('open-menu')"
     >
       <span class="material-symbols-rounded">menu</span>
     </WeButton>

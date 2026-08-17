@@ -368,6 +368,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
               border-width: 0;
               color: var(--color-primary);
               font-family: inherit;
+              font-size: var(--size-14);
               line-height: var(--size-24);
               outline: none;
               padding: 0;

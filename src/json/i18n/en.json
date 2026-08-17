@@ -4,9 +4,10 @@
     "move_item_down": "Move item down",
     "move_item_up": "Move item up",
     "jump_to_today": "Jump to today",
-    "open_menu": "Open menu",
     "mark_complete": "Mark as complete",
     "mark_incomplete": "Mark as incomplete",
+    "notes": "Notes",
+    "open_menu": "Open menu",
     "toggle_theme": "Toggle theme",
     "view_calendar": "View calendar",
     "view_next_week": "View next week",
@@ -18,6 +19,9 @@
     "move_item_up": "Move item up",
     "mark_complete": "Mark as complete",
     "mark_incomplete": "Mark as incomplete"
+  },
+  "notes": {
+    "title": "Notes"
   },
   "settings": {
     "title": "Settings",

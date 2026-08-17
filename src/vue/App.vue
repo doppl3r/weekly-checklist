@@ -4,13 +4,16 @@
   import { useDates } from '../js/utils/use-dates';
   import { useModal } from '../js/utils/use-modal';
   import { useSettings } from '../js/utils/use-settings';
+  // @ts-ignore
   import '../scss/Global.scss';
+  // @ts-ignore
   import '../scss/Fonts.scss';
   import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
   import WeButton from './WeButton.vue';
   import WeSettings from './WeSettings.vue';
+  import WeNotes from './WeNotes.vue';
 
   const i18n = useI18n({ useScope: 'global' });
   const { setTheme, themeRef } = useSettings();
@@ -52,12 +55,33 @@
     label: i18n.t('settings.actions.close'),
     callback: () => closeModal()
   });
-  const modalSettings = {
+
+  const currentModal = ref('')
+
+  const menuSettings = {
     title: i18n.t('settings.title'),
     actions: [
       buttonReview.value,
       buttonClose.value
     ]
+  };
+
+  const openMenu = () => {
+    currentModal.value = 'settings';
+    openModal(menuSettings);
+  };
+
+  const notesSettings = {
+    title: i18n.t('notes.title'),
+    actions: [
+      buttonReview.value,
+      buttonClose.value
+    ]
+  };
+  
+  const openNotes = () => {
+    currentModal.value = 'notes';
+    openModal(notesSettings);
   };
 
   const hideReviewButton = () => {
@@ -83,7 +107,8 @@
       :theme="themeRef"
       :update="updateSelectedDate"
       @toggle-theme="setTheme(themeRef === 'light' ? 'dark' : 'light')"
-      @open="openModal(modalSettings)"
+      @open-menu="openMenu()"
+      @open-notes="openNotes()"
     />
     <WeWeek
       :date="selectedDate"
@@ -102,10 +127,16 @@
       :actions="modalActions"
     >
       <WeSettings
+        v-if="currentModal === 'settings'"
         :storage="storage"
         :date="selectedDate"
         :update="updateWeekdays"
         :visibility="modalIsOpen"
+      />
+      <WeNotes
+        v-else-if="currentModal === 'notes'"
+        :storage="storage"
+        :visibility="modalIsOpen && currentModal === 'notes'"
       />
     </Modal>
     <WeButton
