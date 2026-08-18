@@ -49,14 +49,14 @@
       <span class="material-symbols-rounded">arrow_right_alt</span>
     </WeButton>
     <WeButton
-      :class="'no-padding'"
+      :class="'no-padding margin-left-auto'"
       :title="i18n.t('navigation.notes')"
       @click="emit('open-notes')"
     >
       <span class="material-symbols-rounded">ink_pen</span>
     </WeButton>
     <WeButton
-      :class="'no-padding margin-left-auto'"
+      :class="'no-padding'"
       :title="i18n.t('navigation.toggle_theme')"
       @click="emit('toggle-theme')"
     >

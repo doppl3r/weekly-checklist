@@ -39,7 +39,7 @@
 
 <template>
   <div class="we-notes">
-    <textarea rows="8" v-model="notesRef" @change="setNotes(notesRef)"></textarea>
+    <textarea rows="8" id="notes" v-model="notesRef" @change="setNotes(notesRef)"></textarea>
   </div>
 </template>
 
