@@ -68,6 +68,9 @@
   onMounted(async () => {
     const json = await (await fetch('../manifest.json')).json();
     version.value = json.version;
+
+    // Update storage keys on component mount
+    updateStorageKeys();
   });
 
   // Update settings from parent visibility prop

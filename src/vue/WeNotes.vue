@@ -30,11 +30,6 @@
   onMounted(() => {
     refreshNotes();
   });
-
-  // Update notes from parent visibility prop
-  watch(() => props.visibility, isVisible => {
-    if (isVisible) refreshNotes();
-  });
 </script>
 
 <template>

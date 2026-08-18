@@ -128,14 +128,14 @@
       :actions="modalActions"
     >
       <WeSettings
-        v-if="currentModal === 'settings'"
+        v-show="currentModal === 'settings'"
         :storage="storage"
         :date="selectedDate"
         :update="updateWeekdays"
         :visibility="modalIsOpen"
       />
       <WeNotes
-        v-else-if="currentModal === 'notes'"
+        v-show="currentModal === 'notes'"
         :storage="storage"
         :visibility="modalIsOpen && currentModal === 'notes'"
       />
