@@ -11,6 +11,7 @@
   import Modal from './Modal.vue';
   import WeNav from './WeNav.vue';
   import WeWeek from './WeWeek.vue';
+  import WeButton from './WeButton.vue';
   import WeSettings from './WeSettings.vue';
   import WeNotes from './WeNotes.vue';
 
@@ -50,7 +51,7 @@
       window.open('https://chromewebstore.google.com/detail/weekly-checklist/gmdkpnbkljchgnklemhjdgehjcoibggn/reviews', '_blank');
     }
   });
-  
+
   const buttonClose = ref({
     label: i18n.t('settings.actions.close'),
     callback: () => closeModal()
@@ -139,6 +140,14 @@
         :visibility="modalIsOpen && currentModal === 'notes'"
       />
     </Modal>
+    <WeButton
+      class="button-review"
+      @click="buttonReview.callback"
+      v-if="buttonReview.visible"
+    >
+      <span class="material-symbols-rounded">favorite</span>
+      <span>Write a Review</span>
+    </WeButton>
   </div>
 </template>
 
@@ -148,5 +157,12 @@
     display: flex;
     flex-direction: column;
     height: inherit;
+  }
+
+  .button-review {
+    display: none; // Temporarily disable
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 </style>
