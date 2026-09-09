@@ -18,7 +18,8 @@
     "move_item_down": "Move item down",
     "move_item_up": "Move item up",
     "mark_complete": "Mark as complete",
-    "mark_incomplete": "Mark as incomplete"
+    "mark_incomplete": "Mark as incomplete",
+    "open_link": "Open link"
   },
   "notes": {
     "title": "Notes"

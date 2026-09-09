@@ -15,6 +15,46 @@
     const input = event.target as HTMLInputElement | null;
     return input?.selectionEnd ?? 0;
   }
+  
+  function getLinkMatch(text: string): RegExpMatchArray | null {
+    const httpsUrlPattern = /https:\/\/[^\s]+/;
+    return text.match(httpsUrlPattern);
+  }
+
+  function getLink(text: string): string | null {
+    return getLinkMatch(text)?.[0] ?? null;
+  }
+
+  function hasLink(indexItem: number, checklist: ChecklistItem[]): boolean {
+    return Boolean(checklist[indexItem] && getLink(checklist[indexItem].text));
+  }
+
+  function openLink(indexItem: number, checklist: ChecklistItem[]): void {
+    const link = checklist[indexItem] && getLink(checklist[indexItem].text);
+    if (link) window.open(link, '_blank', 'noopener,noreferrer');
+  }
+
+  function openLinkFromText(indexItem: number, checklist: ChecklistItem[], event: MouseEvent): void {
+    if (!event.ctrlKey && !event.metaKey) return;
+    const input = event.currentTarget as HTMLInputElement;
+    const match = getLinkMatch(input.value);
+    const cursorPosition = input.selectionStart ?? -1;
+    const linkStart = match?.index ?? -1;
+    const linkEnd = linkStart + (match?.[0].length ?? 0);
+    if (!match || cursorPosition < linkStart || cursorPosition >= linkEnd) return;
+    event.preventDefault();
+    openLink(indexItem, checklist);
+  }
+
+  function updateLinkCursor(indexItem: number, checklist: ChecklistItem[], event: KeyboardEvent): void {
+    if (event.key !== 'Control' && event.key !== 'Meta') return;
+    const input = event.currentTarget as HTMLInputElement;
+    input.style.cursor = event.type === 'keydown' && hasLink(indexItem, checklist) ? 'pointer' : 'text';
+  }
+
+  function resetLinkCursor(event: FocusEvent): void {
+    (event.currentTarget as HTMLInputElement).style.cursor = 'text';
+  }
 
   interface Props {
     date: string;
@@ -241,6 +281,10 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
               :class="{ completed: item.checked }"
               :id="`text-${indexDay}-${indexItem}`"
               @change="emit('set', { [key]: weekday.checklist })"
+              @click="openLinkFromText(indexItem, weekday.checklist, $event)"
+              @keydown="updateLinkCursor(indexItem, weekday.checklist, $event)"
+              @keyup="updateLinkCursor(indexItem, weekday.checklist, $event)"
+              @blur="resetLinkCursor($event)"
               @keydown.arrow-down.prevent="focusItem(indexDay, indexItem + 1, getSelectionStart($event), getSelectionEnd($event))"
               @keydown.arrow-up.prevent="focusItem(indexDay, indexItem - 1, getSelectionStart($event), getSelectionEnd($event))"
               @keydown.backspace="onBackspace(key, indexDay, indexItem, weekday.checklist, $event)"
@@ -253,10 +297,11 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
           </div>
           <div class="we-week__day-checklist-item-actions">
             <button
-              :title="i18n.t('checklist.add_item')"
-              @click="addItem(key, indexDay, indexItem, weekday.checklist)"
+              v-if="hasLink(indexItem, weekday.checklist)"
+              :title="i18n.t('checklist.open_link')"
+              @click="openLink(indexItem, weekday.checklist)"
             >
-              <span class="material-symbols-rounded">add</span>
+              <span class="material-symbols-rounded">link</span>
             </button>
             <button
               :title="i18n.t('checklist.move_item_up')"
