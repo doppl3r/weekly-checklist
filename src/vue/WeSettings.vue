@@ -12,6 +12,7 @@
   }
 
   const props = defineProps<Props>();
+  const emit = defineEmits<(e: 'open-notes') => void>();
 
   // Initialize states
   const storageKeys = ref<string[]>([]);
@@ -107,6 +108,11 @@
       @click="openFullscreen"
     >
       <span>Open Fullscreen</span>
+    </WeButton>
+    <WeButton
+      @click="emit('open-notes')"
+    >
+      <span>Open Notes</span>
     </WeButton>
   </div>
 </template>

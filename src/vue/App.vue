@@ -52,12 +52,6 @@
     }
   });
 
-  const buttonNotes = ref({
-    icon: 'ink_pen',
-    label: i18n.t('settings.actions.notes'),
-    callback: () => openNotes()
-  });
-
   const buttonClose = ref({
     label: i18n.t('settings.actions.close'),
     callback: () => closeModal()
@@ -69,7 +63,6 @@
     title: i18n.t('settings.title'),
     actions: [
       buttonReview.value,
-      buttonNotes.value,
       buttonClose.value
     ]
   };
@@ -143,6 +136,7 @@
         :date="selectedDate"
         :update="updateWeekdays"
         :visibility="modalIsOpen"
+        @open-notes="openNotes"
       />
       <WeNotes
         v-show="currentModal === 'notes'"
