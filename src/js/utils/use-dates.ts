@@ -22,7 +22,7 @@ export const useDates = () => {
   // Define state
   const today: string = getKeyFromDate(getDateFromKey());
   const selectedDate: Ref<string> = ref(today);
-  const weekdayNames: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const weekdayNames: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const weekdays: Ref<Weekdays> = ref({});
   const weekdaysUpdated: Ref<boolean> = ref(false);
 
@@ -35,8 +35,8 @@ export const useDates = () => {
       // Get base date from date string (use local midnight)
       const baseDate = getDateFromKey(selectedDate.value);
 
-      // Extract target date using day index
-      const currentDayIndex = baseDate.getDay();
+      // Extract target date using day index (Sunday = 0 -> 6, Monday = 1 -> 0, etc.)
+      const currentDayIndex = (baseDate.getDay() + 6) % 7;
       const targetDateOffset = index - currentDayIndex;
       const targetDate = getDateFromKey(selectedDate.value);
       targetDate.setDate(baseDate.getDate() + targetDateOffset);
