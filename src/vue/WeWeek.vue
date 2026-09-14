@@ -31,7 +31,14 @@
 
   function openLink(indexItem: number, checklist: ChecklistItem[]): void {
     const link = checklist[indexItem] && getLink(checklist[indexItem].text);
-    if (link) window.open(link, '_blank', 'noopener,noreferrer');
+    if (!link) return;
+
+    // Open link using Chrome tabs if available
+    const hasChromeTabs = typeof window !== 'undefined' && Boolean(window.chrome?.tabs?.create);
+    if (hasChromeTabs) return window.chrome.tabs.create({ url: link, active: false });
+
+    // Fallback to opening the link in a new tab
+    window.open(link, '_blank', 'noopener,noreferrer');
   }
 
   function openLinkFromText(indexItem: number, checklist: ChecklistItem[], event: MouseEvent): void {
@@ -58,6 +65,7 @@
 
   interface Props {
     date: string;
+    layout?: string;
     today: string;
     weekdays: Weekdays;
     weekdaysUpdated: boolean;
@@ -255,7 +263,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
 </script>
 
 <template>
-  <div class="we-week" ref="weekdaysRef">
+  <div class="we-week" :class="{ 'layout-grid': layout === 'grid' }" ref="weekdaysRef">
     <div class="we-week__day"
       v-for="(weekday, key, indexDay) in weekdays"
       :class="{ today: today === key }"
@@ -326,16 +334,23 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
   .we-week {
     background-color: var(--color-background);
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: var(--size-8);
     overflow-y: auto;
     padding: 1rem;
     scroll-padding: var(--size-16);
+
+    &.layout-grid {
+      .we-week__day {
+        flex: 0 0 calc(50% - (var(--size-8) / 2));
+      }
+    }
     
     .we-week__day {
       border: var(--size-1) solid var(--color-border);
       border-radius: var(--size-4);
       font-size: var(--size-14);
+      flex: 1 1 100%;
       padding: var(--size-4) 0;
       position: relative;
 

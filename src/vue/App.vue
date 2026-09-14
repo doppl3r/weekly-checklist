@@ -16,7 +16,7 @@
   import WeNotes from './WeNotes.vue';
 
   const i18n = useI18n({ useScope: 'global' });
-  const { setTheme, themeRef } = useSettings();
+  const { setLayout, layoutRef, setTheme, themeRef } = useSettings();
 
   // Initialize dates
   const {
@@ -52,6 +52,12 @@
     }
   });
 
+  const buttonNotes = ref({
+    icon: 'ink_pen',
+    label: i18n.t('settings.actions.notes'),
+    callback: () => openNotes()
+  });
+
   const buttonClose = ref({
     label: i18n.t('settings.actions.close'),
     callback: () => closeModal()
@@ -63,6 +69,7 @@
     title: i18n.t('settings.title'),
     actions: [
       buttonReview.value,
+      buttonNotes.value,
       buttonClose.value
     ]
   };
@@ -105,14 +112,17 @@
       :date="selectedDate"
       :increment="incrementSelectedDate"
       :today="today"
+      :layout="layoutRef"
       :theme="themeRef"
       :update="updateSelectedDate"
+      @toggle-layout="setLayout(layoutRef === 'grid' ? 'single' : 'grid')"
       @toggle-theme="setTheme(themeRef === 'light' ? 'dark' : 'light')"
       @open-menu="openMenu()"
       @open-notes="openNotes()"
     />
     <WeWeek
       :date="selectedDate"
+      :layout="layoutRef"
       :today="today"
       :weekdays="weekdays"
       :weekdays-updated="weekdaysUpdated"

@@ -8,6 +8,7 @@
     "mark_incomplete": "Mark as incomplete",
     "notes": "Notes",
     "open_menu": "Open menu",
+    "toggle_layout": "Toggle layout",
     "toggle_theme": "Toggle theme",
     "view_calendar": "View calendar",
     "view_next_week": "View next week",
@@ -28,6 +29,7 @@
     "title": "Settings",
     "actions": {
       "close": "Close",
+      "notes": "Notes",
       "review": "Write a Review"
     }
   }

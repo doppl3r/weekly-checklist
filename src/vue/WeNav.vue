@@ -9,12 +9,13 @@
   interface Props {
     date: string;
     increment: (days: number) => void;
+    layout?: string;
     today: string;
     theme: string;
     update: (date: string) => void;
   }
 
-  const emit = defineEmits<(e: 'open-menu' | 'open-notes' | 'toggle-theme') => void>();
+  const emit = defineEmits<(e: 'open-menu' | 'toggle-layout' | 'toggle-theme') => void>();
   const props = defineProps<Props>();
 </script>
 
@@ -50,10 +51,11 @@
     </WeButton>
     <WeButton
       :class="'no-padding margin-left-auto'"
-      :title="i18n.t('navigation.notes')"
-      @click="emit('open-notes')"
+      :title="i18n.t('navigation.toggle_layout')"
+      @click="emit('toggle-layout')"
     >
-      <span class="material-symbols-rounded">ink_pen</span>
+      <span class="material-symbols-rounded" v-if="layout === 'grid'">view_agenda</span>
+      <span class="material-symbols-rounded" v-else>grid_view</span>
     </WeButton>
     <WeButton
       :class="'no-padding'"
