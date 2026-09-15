@@ -112,6 +112,7 @@ const onBackspace = ( key: string, indexDay: number, indexItem: number, checklis
       if (checklist[0].text === '') {
         // Remove checklist from storage if checklist only has one empty item
         if (checklist.length === 1) {
+          checklist.splice(0, 1);
           emit('remove', key);
         } else {
           // Only remove first item if multiple items exist
@@ -122,6 +123,11 @@ const onBackspace = ( key: string, indexDay: number, indexItem: number, checklis
       }
     }
   }
+};
+
+const addChecklistItem = (key: string, indexDay: number, checklist: ChecklistItem[]) => {
+  checklist.push({ text: '', checked: false });
+  focusItem(indexDay, checklist.length - 1, 0, 0);
 };
 
 const addItem = (key: string, indexDay: number, indexItem: number, checklist: ChecklistItem[]) => {
@@ -149,16 +155,18 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
   const focusItem = (indexDay: number, indexItem: number, start: number = 0, end: number = 0) => {
     nextTick(() => {
       const parent = weekdaysRef.value;
-      const checklistLength = props.weekdays[Object.keys(props.weekdays)[indexDay]].checklist.length;
-      if (!parent) return;
+      const dayKey = Object.keys(props.weekdays)[indexDay];
+      if (!parent || !dayKey) return;
+      const checklist = props.weekdays[dayKey].checklist;
+      if (!checklist || checklist.length === 0) return;
       if (indexItem < 0) {
         indexItem = 0;
         start = 0;
         end = 0;
       }
-      else if (indexItem > checklistLength - 1) {
-        indexItem = checklistLength - 1;
-        const textLength = props.weekdays[Object.keys(props.weekdays)[indexDay]].checklist[indexItem].text.length;
+      else if (indexItem > checklist.length - 1) {
+        indexItem = checklist.length - 1;
+        const textLength = checklist[indexItem].text.length;
         start = textLength;
         end = textLength;
       }
@@ -214,9 +222,6 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
     const targetKey = `${year}-${month}-${day}`;
     const item = checklist.splice(indexItem, 1)[0];
 
-    // Keep a blank placeholder so the day isn't left with zero items to render
-    if (checklist.length === 0) checklist.push({ text: '', checked: false });
-
     // Find the index of the target day in the weekdays object
     const targetDayIndex = Object.keys(props.weekdays).indexOf(targetKey);
 
@@ -250,7 +255,7 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
     else {
       // Target day is outside the currently displayed week
       props.storage.get(targetKey).then((result: Record<string, ChecklistItem[]>) => {
-        const targetChecklist = Array.isArray(result[targetKey]) ? result[targetKey] : [{ text: '', checked: false }];
+        const targetChecklist = Array.isArray(result[targetKey]) ? result[targetKey] : [];
         if (direction === 1) targetChecklist.unshift(item);
         else targetChecklist.push(item);
         emit('set', { [targetKey]: targetChecklist });
@@ -325,6 +330,14 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
             </button>
           </div>
         </div>
+        <button
+          class="we-week__day-add-button"
+          type="button"
+          @click="addChecklistItem(key, indexDay, weekday.checklist)"
+        >
+          <span class="material-symbols-rounded">add</span>
+          <span>{{ i18n.t('checklist.add_item') }}</span>
+        </button>
       </div>
     </div>
   </div>
@@ -481,6 +494,38 @@ const onDelete = (key: string, indexDay: number, indexItem: number, checklist: C
                 font-size: var(--size-16);
               }
             }
+          }
+        }
+
+        .we-week__day-add-button {
+          align-items: center;
+          background: transparent;
+          border: none;
+          border-radius: var(--size-4);
+          color: var(--color-disabled);
+          cursor: pointer;
+          display: flex;
+          font-family: inherit;
+          font-size: var(--size-14);
+          height: var(--size-24);
+          line-height: var(--size-24);
+          outline: none;
+          padding: 0;
+          text-align: left;
+          width: 100%;
+
+          .material-symbols-rounded {
+            align-items: center;
+            display: flex;
+            font-size: var(--size-16);
+            height: var(--size-24);
+            justify-content: center;
+            width: var(--size-24);
+          }
+
+          &:hover,
+          &:focus-visible {
+            color: var(--color-primary);
           }
         }
       }

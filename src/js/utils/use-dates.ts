@@ -51,7 +51,7 @@ export const useDates = () => {
       const key = getKeyFromDate(targetDate);
 
       // Assign new weekday array item
-      weekdays.value[key] = { name, label, checklist: [{ text: '', checked: false }] };
+      weekdays.value[key] = { name, label, checklist: [] };
     });
 
     // Set initial weekdays updated state
@@ -63,13 +63,8 @@ export const useDates = () => {
       keys.forEach(key => {
         const checklist = result[key];
         if (Array.isArray(checklist)) {
-          // Clear default empty item
-          weekdays.value[key].checklist.length = 0;
-
           // Populate checklist with loaded items
-          checklist.forEach(item => {
-            weekdays.value[key].checklist.push(item);
-          });
+          weekdays.value[key].checklist = checklist;
         }
       });
 
